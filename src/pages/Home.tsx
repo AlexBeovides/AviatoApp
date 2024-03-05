@@ -1,8 +1,8 @@
 import { BodySection } from "../components/BodySection";
-import cuateClient from "../assets/images/cuate-client.png";
-import cuateSecurity from "../assets/images/cuate-security.png";
-import cuateManteinance from "../assets/images/cuate-manteinance.png";
-import cuateDirector from "../assets/images/cuate-director.png";
+import cuateClient from "../assets/images/cuate-client.svg";
+import cuateSecurity from "../assets/images/cuate-security.svg";
+import cuateManteinance from "../assets/images/cuate-manteinance.svg";
+import cuateDirector from "../assets/images/cuate-director.svg";
 
 export const Home = () => {
   return (
@@ -12,33 +12,33 @@ export const Home = () => {
           <div className="centered-content">
             <h1>Elevating Airport Management</h1>
             <p>
-              We are dedicated to seamless airport management and efficient
+              We are commited to seamless airport management and efficient
               services requests. Explore a new dimension of service excellence
               with us!
             </p>
-            <button>Explore</button>
+            <a href="/aviatoapp/login">Explore</a>
           </div>
         </div>
       </div>
 
       <BodySection
         title="Find the perfect service"
-        text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, facilis libero pariatur recusandae distinctio excepturi officia. Tenetur quod sequi odit molestias pariatur aut ipsa asperiores in dolorum, eos, dignissimos quae!"
+        text="Explore the infinite possibilities of airport services. Select the airport of your destination, and you will certainly find what you need among it's facilities."
         imageUrl={cuateClient}
       />
       <BodySection
         title="Direct your dream airport"
-        text="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem ad doloremque harum nam nobis suscipit at facere ipsum adipisci. Ut quae vitae natus iste ea repudiandae voluptatem adipisci neque eaque."
+        text="Management made easy by our simple-to-use website. If you are the director of an airport, log in to start directing it to it's best future..."
         imageUrl={cuateDirector}
       />
       <BodySection
         title="Secure your security"
-        text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum possimus sequi suscipit? Aut deserunt fugiat cumque obcaecati voluptate corrupti suscipit maxime asperiores, quo aliquid perspiciatis dignissimos accusantium ducimus qui at."
+        text="From clients, to ships, to flights, we must make sure everything is in order. Airport security is your passion/job? Register with us to start!"
         imageUrl={cuateSecurity}
       />
       <BodySection
         title="Mantain everything working"
-        text="Lorem, ipsum dolor sit amet consectetur adipisicing elit. Natus dolorum sunt culpa tenetur obcaecati adipisci nam explicabo. Incidunt, explicabo, temporibus non delectus dolore numquam eveniet eligendi provident impedit, praesentium mollitia!"
+        text="I've got a screw to spare, hmmm... Don't worry, the chief mechanic is logued in right now."
         imageUrl={cuateManteinance}
       />
     </>

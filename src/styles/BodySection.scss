@@ -103,23 +103,26 @@
 .centered-content p {
   margin-top: 0px;
   font-weight: bolder;
+  color: rgb(58, 62, 68);
 }
 
-.centered-content button {
+.centered-content a {
   margin-top: 20px;
   width: 200px;
   height: 50px;
-  padding: 10px 20px;
+  padding: 13px;
   font-size: 15px;
   background-color: #007bff;
+  text-decoration: none;
   color: white;
   border: none;
   border-radius: 5px;
+  text-align: center;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.centered-content button:hover {
+.centered-content a:hover {
   background-color: #005ec2;
 }
 
