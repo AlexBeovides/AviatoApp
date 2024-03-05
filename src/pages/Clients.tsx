@@ -17,8 +17,8 @@ const [rowData, setRowData] = useState<Client[]>([]);
 const [colDefs] = useState<ColDef[]>([
   { field: 'id', headerName: 'ID', editable: false },
   { field: 'name', headerName: 'Name', editable: true },
-  { field: 'nationality', headerName: 'Nationality', editable: true },
-  { field: 'clientType', headerName: 'Client Type', editable: true },
+  { field: 'nationality', headerName: 'Nationality', editable: true , filter: true, floatingFilter: true },
+  { field: 'clientType', headerName: 'Client Type', editable: true, filter: true, floatingFilter: true },
 ]);
 
 const onCellValueChanged = (params : CellValueChangedEvent) => {
