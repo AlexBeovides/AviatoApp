@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
-import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi,RowSelectedEvent } from 'ag-grid-community';
+import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
 
 
 type Client = {
@@ -36,15 +36,17 @@ export const Clients = () => {
   };
 
   const deleteSelectedRows = () => {
-    selectedRows.forEach(row => {
-      fetch(`https://localhost:32770/api/Clients/${row.id}`, {
-        method: 'DELETE',
-      })
-      .catch(error => console.error('Error:', error));
-    });
-
-    setRowData(rowData.filter(row => !selectedRows.includes(row)));
-    setSelectedRows([]);
+    if (window.confirm('Are you sure you want to delete the selected rows?')) {
+      selectedRows.forEach(row => {
+        fetch(`https://localhost:32770/api/Clients/${row.id}`, {
+          method: 'DELETE',
+        })
+        .catch(error => console.error('Error:', error));
+      });
+  
+      setRowData(rowData.filter(row => !selectedRows.includes(row)));
+      setSelectedRows([]);
+    }
   };
 
 const onCellValueChanged = (params : CellValueChangedEvent) => {
