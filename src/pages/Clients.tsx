@@ -1,10 +1,10 @@
 import '../styles/Clients.scss';
+import { API_BASE_URL } from '../config';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
-
 
 type Client = {
   id: number;
@@ -26,7 +26,6 @@ export const Clients = () => {
     { field: 'clientType', headerName: 'Client Type', editable: true, filter: true, floatingFilter: true },
   ];
 
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewClient({ ...newClient, [event.target.name]: event.target.value });
   };
@@ -34,7 +33,7 @@ export const Clients = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
   
-    fetch('https://localhost:32770/api/Clients', {
+    fetch(`${API_BASE_URL}/Clients`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +58,7 @@ export const Clients = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       selectedRows.forEach(row => {
-        fetch(`https://localhost:32770/api/Clients/${row.id}`, {
+        fetch(`${API_BASE_URL}/Clients/${row.id}`, {
           method: 'DELETE',
         })
         .catch(error => console.error('Error:', error));
@@ -73,7 +72,7 @@ export const Clients = () => {
 const onCellValueChanged = (params : CellValueChangedEvent) => {
   const updatedClient = params.data;
 
-  fetch(`https://localhost:32770/api/Clients/${updatedClient.id}`, {
+  fetch(`${API_BASE_URL}/Clients/${updatedClient.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -84,7 +83,7 @@ const onCellValueChanged = (params : CellValueChangedEvent) => {
 };
 
 useEffect(() => {
-  fetch('https://localhost:32770/api/Clients')
+  fetch(`${API_BASE_URL}/Clients`)
     .then(response => response.json())
     .then(data => setRowData(data))
     .catch(error => console.error('Error:', error));
