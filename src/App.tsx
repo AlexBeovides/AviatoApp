@@ -2,10 +2,10 @@ import "./styles/_main.scss";
 import { NavBar } from "./components/NavBar";
 import { FooterSection } from "./components/FooterSection";
 import { Home } from "./pages/Home";
-import { Clients } from "./pages/Clients";
 
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
+import { Airports } from "./pages/Airports";
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -18,7 +18,8 @@ function App() {
 
         <Routes>
           <Route path="/aviatoapp/" element={<Home />}></Route>
-          <Route path="/aviatoapp/clients" element={<Clients />}></Route>
+          {/* <Route path="/aviatoapp/clients" element={<Clients />}></Route> */}
+          <Route path="/aviatoapp/airports" element={<Airports />}></Route>
         </Routes>
 
         <FooterSection />
