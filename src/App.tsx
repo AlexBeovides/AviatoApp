@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { Airports } from "./pages/Airports";
+import { Register } from "./pages/Register";
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -20,6 +21,7 @@ function App() {
           <Route path="/aviatoapp/" element={<Home />}></Route>
           {/* <Route path="/aviatoapp/clients" element={<Clients />}></Route> */}
           <Route path="/aviatoapp/airports" element={<Airports />}></Route>
+          <Route path="/aviatoapp/login" element={<Register />}></Route>
         </Routes>
 
         <FooterSection />
