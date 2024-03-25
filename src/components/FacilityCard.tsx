@@ -1,18 +1,18 @@
-import "../styles/Card.scss"
-import "../styles/MenuCard.scss"
+import "../styles/Card.scss";
+import "../styles/FacilityCard.scss";
 
 interface CardProps {
   name: string;
-  price: string;
+  type: string;
   stars: number;
   url: string;
 }
 
-export const MenuCard= (props : CardProps) => { 
-  const propUrl=props.url
-  const propPrice=props.price
-  const propStars=props.stars
-  const propName=props.name;
+export const FacilityCard = (props: CardProps) => {
+  const propUrl = props.url;
+  const propStars = props.stars;
+  const propName = props.name;
+  const propType = props.type;
 
   const stars = [];
 
@@ -27,22 +27,21 @@ export const MenuCard= (props : CardProps) => {
   return (
     <div className="card">
       <div className="card__image-container">
-        <div className="card__image" style={{ backgroundImage: `url(${propUrl})`}}></div>
+        <div
+          className="card__image"
+          style={{ backgroundImage: `url(${propUrl})` }}
+        ></div>
         {/* <img src={`${propUrl}`} alt="Salad" width="500" height="333" /> */}
       </div>
       <div className="card__info">
         <div className="car__info--title">
           <h3>{propName}</h3>
-          <div className="bottom-row">Fresh & sweet</div>
+          <div className="bottom-row">{propType}</div>
         </div>
         <div className="card__info--price">
-          <p>$ {propPrice}</p>
-          <div className="stars-container bottom-row">
-            {stars}
-          </div>
+          <div className="stars-container bottom-row">{stars}</div>
         </div>
       </div>
     </div>
   );
-
-}
+};
