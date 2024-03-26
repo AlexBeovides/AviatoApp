@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { Airports } from "./pages/Airports";
 import { Register } from "./pages/Register";
+import { Login } from "./pages/Login";
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -21,7 +22,8 @@ function App() {
           <Route path="/aviatoapp/" element={<Home />}></Route>
           {/* <Route path="/aviatoapp/clients" element={<Clients />}></Route> */}
           <Route path="/aviatoapp/airports" element={<Airports />}></Route>
-          <Route path="/aviatoapp/login" element={<Register />}></Route>
+          <Route path="/aviatoapp/register" element={<Register />}></Route>
+          <Route path="/aviatoapp/login" element={<Login/>}></Route>
         </Routes>
 
         <FooterSection />

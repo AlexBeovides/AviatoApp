@@ -1,6 +1,8 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, useContext, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
+import { AuthContext } from "../AuthContext";
+import { Link } from 'react-router-dom';
 
 interface FormValues { 
   email: string;
@@ -22,6 +24,8 @@ interface FormErrors {
 }
 
 export const Register = () =>{
+    const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
+
     const initialValues: FormValues = { 
       email: "",
       password: "",
@@ -32,7 +36,7 @@ export const Register = () =>{
     };
     const [formValues, setFormValues] = useState<FormValues>(initialValues);
     const [formErrors, setFormErrors] = useState<FormErrors>({});
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false); 
 
     const navigate = useNavigate();
   
@@ -67,6 +71,8 @@ export const Register = () =>{
     
             if (response.ok) {
                 console.log('Signed in successfully', data);
+                localStorage.setItem('token', data.token);
+                setIsLoggedIn(true);
                 navigate('/aviatoapp/');
             } else {
                 console.log('Request failed', data);
@@ -200,7 +206,7 @@ export const Register = () =>{
                                 </div>
                             </form>
                             <div className="text">
-                                Already have an account? <span>Login</span>
+                                Already have an account? <Link to="/aviatoapp/login"><span>Login</span></Link>
                             </div>
                         </div>
                     )}
