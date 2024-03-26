@@ -21,6 +21,9 @@ export function NavBar({ setLock }: { setLock: any }) {
           <Link to="/aviatoapp/airports" target="blank">
             airports
           </Link>
+          <Link to="/aviatoapp/facilities" target="blank">
+            facilities
+          </Link>
           <Link to="/aviatoapp/login" target="blank">
             log in
           </Link>
