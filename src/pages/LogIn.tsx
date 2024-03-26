@@ -16,7 +16,7 @@ interface FormErrors {
 }
 
 export const Login = () => {
-  const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
+  const { setIsLoggedIn, setUserName,setUserRole } = useContext(AuthContext);
 
   const initialValues: FormValues = { 
     email: "",
@@ -59,7 +59,8 @@ export const Login = () => {
           if(data.token!=""){
             console.log('Logged in successfully', data);
             localStorage.setItem('token', data.token);
-            console.log(data.token);
+            localStorage.setItem('userName', data.userName);
+            localStorage.setItem('role', data.role);
             setIsLoggedIn(true);
             navigate('/aviatoapp/');
           }

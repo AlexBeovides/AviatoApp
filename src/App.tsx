@@ -24,7 +24,6 @@ function App() {
           {/* <Route path="/aviatoapp/clients" element={<Clients />}></Route> */}
           <Route path="/aviatoapp/airports" element={<Airports />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
-          <Route path="/aviatoapp/login" element={<Register />}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>
           <Route path="/aviatoapp/login" element={<Login/>}></Route>
         </Routes>

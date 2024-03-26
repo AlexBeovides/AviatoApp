@@ -3,12 +3,13 @@ import { FacilityCard } from "../components/FacilityCard";
 
 // Change for generic imports, fetch from database
 import Breadway from "../assets/images/Breadway.jpg";
-import AMXWorkshop from "../assets/images/AMXWorkshop.jpg";
+import AMXWorkshop from "../assets/images/AMX-Workshop.jpg";
 import Tascon from "../assets/images/Tascon.jpg";
 import ArtesaniaDominicana from "../assets/images/ArtesaniaDominicana.jpg";
 import CambioExchange from "../assets/images/Cambio.jpg";
 import Ryu from "../assets/images/Ryu.jpg";
 import Tagliatella from "../assets/images/Tagliatella.jpg";
+
 
 export const Facilities = () => {
   return (

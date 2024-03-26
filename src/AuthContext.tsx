@@ -3,8 +3,10 @@ import React, { useState, useContext } from 'react';
 export const AuthContext = React.createContext({
   isLoggedIn: false,
   setIsLoggedIn: (value: boolean) => {},
-  userRole: null,
-  setUserRole: (value: null) => {},
+  userRole: null as string | null,
+  setUserRole: (value: string | null) => {},
+  userName: null as string | null,
+  setUserName: (value: string | null) => {},
 });
 
 interface AuthProviderProps {
@@ -12,8 +14,9 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+  const [userRole, setUserRole] = useState(localStorage.getItem('role') || null);
+  const [userName, setUserName] = useState(localStorage.getItem('userName') || null);
 
   // Load the initial state from localStorage here if needed
 
@@ -22,6 +25,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoggedIn,
     userRole,
     setUserRole,
+    userName,
+    setUserName,
   };
 
   return (
