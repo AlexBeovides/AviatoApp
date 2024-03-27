@@ -5,6 +5,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
+ 
 
 type Airport = {
     id: number;
@@ -14,12 +15,15 @@ type Airport = {
     longitude: number | null;
 };
 
+ 
 export const Airports = () => {
     const [rowData, setRowData] = useState<Airport[]>([]);
     const [selectedRows, setSelectedRows] = useState<Airport[]>([]);
     const [gridApi, setGridApi] = useState<GridApi | null>(null);
     const [newAirport, setNewAirport] = useState<Airport>({ id: 0, name: '', address: '', latitude: null, longitude: null});
   
+    const token = localStorage.getItem('token');
+
     const colDefs: ColDef[] = [
       { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
       { field: 'name', headerName: 'Name', editable: true },
@@ -39,6 +43,7 @@ export const Airports = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(newAirport),
       })
@@ -62,6 +67,9 @@ export const Airports = () => {
         selectedRows.forEach(row => {
           fetch(`${API_BASE_URL}/Airports/${row.id}`, {
             method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
           })
           .catch(error => console.error('Error:', error));
         });
@@ -78,6 +86,7 @@ export const Airports = () => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(updatedAirport),
     })

@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
-import { AuthContext } from "../AuthContext";
 import { Link } from 'react-router-dom';
 
 interface FormValues { 
@@ -24,8 +23,6 @@ interface FormErrors {
 }
 
 export const Register = () =>{
-    const { setIsLoggedIn, setUserRole } = useContext(AuthContext);
-
     const initialValues: FormValues = { 
       email: "",
       password: "",
@@ -70,9 +67,7 @@ export const Register = () =>{
             }
     
             if (response.ok) {
-                console.log('Signed in successfully', data);
-                localStorage.setItem('token', data.token);
-                setIsLoggedIn(true);
+                console.log('Signed up successfully', data);
                 navigate('/aviatoapp/');
             } else {
                 console.log('Request failed', data);

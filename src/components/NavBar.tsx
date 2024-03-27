@@ -11,16 +11,15 @@ export function NavBar({ setLock }: { setLock: any }) {
     document.body.classList.remove("locked");
   }
 
-  const { isLoggedIn, setIsLoggedIn, setUserName, userRole ,setUserRole } = useContext(AuthContext);
+  const { token, setToken, setUserName, userRole ,setUserRole } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleLogout = () => { 
-    localStorage.removeItem('token'); 
-    localStorage.removeItem('role'); 
-    localStorage.removeItem('userName'); 
+    localStorage.removeItem('token');  
+    setToken("");
     setUserName("");
     setUserRole("");
-    setIsLoggedIn(false);
     navigate('/aviatoapp/');
   };
 
@@ -31,17 +30,17 @@ export function NavBar({ setLock }: { setLock: any }) {
           aviato
         </Link>
         <div className="nav-links">
-          {userRole === 'Admin' && (
+          {token && userRole === 'Admin' && (
             <Link to="/aviatoapp/airports" target="blank">
               airports
             </Link>
           )}
-          {userRole === 'Client' && (
+          {token && userRole === 'Client' && (
           <Link to="/aviatoapp/facilities" target="blank">
             facilities
           </Link>
         )}
-          {isLoggedIn ? (
+          {token ? (
           <div onClick={handleLogout}>
             log out
           </div>

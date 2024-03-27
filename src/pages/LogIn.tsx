@@ -16,7 +16,7 @@ interface FormErrors {
 }
 
 export const Login = () => {
-  const { setIsLoggedIn, setUserName,setUserRole } = useContext(AuthContext);
+  const { setToken, setUserName,setUserRole } = useContext(AuthContext);
 
   const initialValues: FormValues = { 
     email: "",
@@ -40,6 +40,7 @@ export const Login = () => {
 
     if (Object.keys(errors).length === 0) {
       setIsLoading(true);
+      
       try {
         const response = await fetch('https://localhost:7210/api/Account/login', {
           method: 'POST',
@@ -58,10 +59,12 @@ export const Login = () => {
         if (response.ok) {
           if(data.token!=""){
             console.log('Logged in successfully', data);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userName', data.userName);
-            localStorage.setItem('role', data.role);
-            setIsLoggedIn(true);
+            localStorage.setItem('token', data.token); 
+            localStorage.setItem('user_name', data.user_name); 
+            localStorage.setItem('user_role', data.role); 
+            setToken(data.token);
+            setUserName(data.userName);
+            setUserRole(data.role);
             navigate('/aviatoapp/');
           }
           else{
@@ -70,7 +73,7 @@ export const Login = () => {
           }
         } else {
           console.log('Request failed', data);
-          setFormErrors({ server: data.join(' ') });
+          setFormErrors({ server: Object.values(data).join(' ') });
         }
       } catch (error) {
         console.error('Error:', error);
