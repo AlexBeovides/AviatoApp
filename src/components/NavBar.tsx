@@ -11,14 +11,13 @@ export function NavBar({ setLock }: { setLock: any }) {
     document.body.classList.remove("locked");
   }
 
-  const { token, setToken, setUserName, userRole ,setUserRole } = useContext(AuthContext);
+  const { token, setToken, userRole ,setUserRole } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleLogout = () => { 
     localStorage.removeItem('token');  
     setToken("");
-    setUserName("");
     setUserRole("");
     navigate('/aviatoapp/');
   };

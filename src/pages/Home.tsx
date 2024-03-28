@@ -2,13 +2,10 @@ import { BodySection } from "../components/BodySection";
 import cuateClient from "../assets/images/cuate-client.svg";
 import cuateSecurity from "../assets/images/cuate-security.svg";
 import cuateManteinance from "../assets/images/cuate-manteinance.svg";
-import cuateDirector from "../assets/images/cuate-director.svg";
-import { AuthContext } from "../AuthContext";
-import { useContext } from "react";
+import cuateDirector from "../assets/images/cuate-director.svg"; 
 
 export const Home = () => {
-  const { token, userRole, userName } = useContext(AuthContext);
-  console.log(token);
+
   return (
     <>
       <div className="main-header">

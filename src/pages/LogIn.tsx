@@ -16,7 +16,7 @@ interface FormErrors {
 }
 
 export const Login = () => {
-  const { setToken, setUserName,setUserRole } = useContext(AuthContext);
+  const { setToken,setUserRole } = useContext(AuthContext);
 
   const initialValues: FormValues = { 
     email: "",
@@ -60,17 +60,17 @@ export const Login = () => {
           if(data.token!=""){
             console.log('Logged in successfully', data);
             localStorage.setItem('token', data.token); 
-            localStorage.setItem('user_name', data.user_name); 
             localStorage.setItem('user_role', data.role); 
             setToken(data.token);
-            setUserName(data.userName);
             setUserRole(data.role);
             navigate('/aviatoapp/');
-          }
-          else{
+          } else {
             console.log('Login failed', data);
-            setFormErrors({ server: "Wrong email/password combination" });
+            setFormErrors({ server: "Unable to log in. Please try again later." });
           }
+        } else if (response.status === 401) {
+          console.log('Request failed', data);
+          setFormErrors({ server: "Wrong email/password combination" });
         } else {
           console.log('Request failed', data);
           setFormErrors({ server: Object.values(data).join(' ') });
