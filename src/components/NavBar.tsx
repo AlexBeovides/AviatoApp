@@ -29,25 +29,35 @@ export function NavBar({ setLock }: { setLock: any }) {
           aviato
         </Link>
         <div className="nav-links">
+
           {token && userRole === 'Admin' && (
             <Link to="/aviatoapp/airports" target="blank">
               airports
             </Link>
           )}
+
+          {token && userRole === 'Admin' && (
+            <Link to="/aviatoapp/planes" target="blank">
+              planes
+            </Link>
+          )}
+
           {token && userRole === 'Client' && (
           <Link to="/aviatoapp/facilities" target="blank">
             facilities
           </Link>
-        )}
+          )}
+
           {token ? (
           <div onClick={handleLogout}>
             log out
           </div>
-        ) : (
+          ) : (
           <Link to="/aviatoapp/login" target="blank">
             log in
           </Link>
-        )}
+          )}
+
         </div>
 
         <div

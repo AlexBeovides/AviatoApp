@@ -12,7 +12,7 @@
     margin-bottom: 30px;
 }
 
-.airport-table { 
+.manager-table { 
     margin-left: 30px;
     margin-bottom: 15px;
 }
@@ -39,11 +39,11 @@
     flex-direction: column; // Stacks the children vertically
     justify-content: space-between;
     align-items: flex-start;
-margin-left: 30px;
-margin-bottom: 30px;
-width: 200px;
-max-width: 300px; // Adjust this value as needed
-flex-grow: 0; 
+    margin-left: 30px;
+    margin-bottom: 30px;
+    width: 200px;
+    max-width: 300px; // Adjust this value as needed
+    flex-grow: 0; 
 }
   
 .form-container input {

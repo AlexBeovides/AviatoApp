@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
 import { Link } from 'react-router-dom';

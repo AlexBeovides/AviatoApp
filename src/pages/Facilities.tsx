@@ -36,7 +36,7 @@ export const Facilities = () => {
             url={Breadway}
           />
           <FacilityCard
-            name="Nuts&Screws"
+            name="AMXWorkshop"
             type="Workshop"
             stars={5}
             url={AMXWorkshop}
@@ -54,12 +54,17 @@ export const Facilities = () => {
             url={ArtesaniaDominicana}
           />
           <FacilityCard
-            name="Cambio Exchange"
+            name="CambioExchange"
             type="Currency exchange office"
             stars={5}
             url={CambioExchange}
           />
-          <FacilityCard name="Ryu" type="Sushi Bar" stars={4} url={Ryu} />
+          <FacilityCard 
+            name="Ryu" 
+            type="Sushi Bar" 
+            stars={4} 
+            url={Ryu} 
+          />
           <FacilityCard
             name="Tagliatella"
             type="Restaurant"
