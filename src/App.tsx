@@ -5,8 +5,9 @@ import { Home } from "./pages/Home";
 
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
-import { Airports } from "./pages/Airports";
-import { Planes } from "./pages/Planes";
+import { AirportsManager } from "./pages/AirportsManager";
+import { FacilitiesManager } from "./pages/FacilitiesManager";
+import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { Facilities } from "./pages/Facilities";
@@ -22,8 +23,9 @@ function App() {
 
         <Routes>
           <Route path="/aviatoapp/" element={<Home />}></Route> 
-          <Route path="/aviatoapp/airports" element={<Airports />}></Route>
-          <Route path="/aviatoapp/planes" element={<Planes />}></Route>
+          <Route path="/aviatoapp/airports_manager" element={<AirportsManager />}></Route>
+          <Route path="/aviatoapp/facilities_manager" element={<FacilitiesManager />}></Route>
+          <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>
           <Route path="/aviatoapp/login" element={<Login/>}></Route>

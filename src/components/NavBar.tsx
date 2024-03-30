@@ -31,13 +31,19 @@ export function NavBar({ setLock }: { setLock: any }) {
         <div className="nav-links">
 
           {token && userRole === 'Admin' && (
-            <Link to="/aviatoapp/airports" target="blank">
+            <Link to="/aviatoapp/airports_manager" target="blank">
               airports
             </Link>
           )}
 
           {token && userRole === 'Admin' && (
-            <Link to="/aviatoapp/planes" target="blank">
+            <Link to="/aviatoapp/facilities_manager" target="blank">
+              facilities
+            </Link>
+          )}
+
+          {token && userRole === 'Admin' && (
+            <Link to="/aviatoapp/planes_manager" target="blank">
               planes
             </Link>
           )}

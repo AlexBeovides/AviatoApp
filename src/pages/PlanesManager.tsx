@@ -13,72 +13,65 @@ type Plane = {
     crewCount: number  | null;
     passengerCapacity: number | null;
     cargoCapacity: number | null;
+    isDeleted: boolean;
 };  
  
-export const Planes = () => {
-    const [rowData, setRowData] = useState<Plane[]>([]);
-    const [selectedRows, setSelectedRows] = useState<Plane[]>([]);
-    const [gridApi, setGridApi] = useState<GridApi | null>(null);
-    const [newPlane, setNewPlane] = useState<Plane>({  id: 0 , ownerId: '' , classification: ''  , 
-    crewCount: null , passengerCapacity: null, cargoCapacity: null });
-  
-    const token = localStorage.getItem('token');
+export const PlanesManager = () => {
+  const [rowData, setRowData] = useState<Plane[]>([]);
+  const [selectedRows, setSelectedRows] = useState<Plane[]>([]);
+  const [gridApi, setGridApi] = useState<GridApi | null>(null);
+  const [newPlane, setNewPlane] = useState<Plane>({  id: 0 , ownerId: '' , classification: ''  , 
+  crewCount: null , passengerCapacity: null, cargoCapacity: null ,isDeleted: false });
 
-    const colDefs: ColDef[] = [
-      { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
-      { field: 'ownerId', headerName: 'Owner ID', editable: true , filter: true},
-      { field: 'classification', headerName: 'Classification', editable: true, filter: true },
-      { field: 'crewCount', headerName: 'Crew Count', editable: true },
-      { field: 'passengerCapacity', headerName: 'Passenger Capacity', editable: true },
-      { field: 'cargoCapacity', headerName: 'Cargo Capacity', editable: true }
-    ];
-  
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setNewPlane({ ...newPlane, [event.target.name]: event.target.value });
-    };
-  
-    const handleFormSubmit = (event: React.FormEvent) => {
-      event.preventDefault();
-    
-      fetch(`${API_BASE_URL}/Planes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(newPlane),
-      })
+  const token = localStorage.getItem('token');
+
+  const colDefs: ColDef[] = [
+    { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
+    { field: 'ownerId', headerName: 'Owner ID', editable: true , filter: true},
+    { field: 'classification', headerName: 'Classification', editable: true, filter: true },
+    { field: 'crewCount', headerName: 'Crew Count', editable: true },
+    { field: 'passengerCapacity', headerName: 'Passenger Capacity', editable: true },
+    { field: 'cargoCapacity', headerName: 'Cargo Capacity', editable: true },
+    { field: 'isDeleted', headerName: 'Deleted', editable: true },
+  ];
+
+  const onGridReady = (params: GridReadyEvent) => {
+    setGridApi(params.api);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setNewPlane({ ...newPlane, [event.target.name]: event.target.value });
+  };
+
+  const onSelectionChanged = () => {
+    if (gridApi) {
+      setSelectedRows(gridApi.getSelectedRows());
+    }
+  };
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/Planes`)
       .then(response => response.json())
-      .then(data => setRowData([...rowData, data]))
+      .then(data => {console.log('Response:', data);setRowData(data);})
       .catch(error => console.error('Error:', error));
-    };
-  
-    const onGridReady = (params: GridReadyEvent) => {
-      setGridApi(params.api);
-    };
-  
-    const onSelectionChanged = () => {
-      if (gridApi) {
-        setSelectedRows(gridApi.getSelectedRows());
-      }
-    };
-  
-    const deleteSelectedRows = () => {
-      if (window.confirm('Are you sure you want to delete the selected rows?')) {
-        selectedRows.forEach(row => {
-          fetch(`${API_BASE_URL}/Planes/${row.id}`, {
-            method: 'DELETE',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-          })
-          .catch(error => console.error('Error:', error));
-        });
-    
-        setRowData(rowData.filter(row => !selectedRows.includes(row)));
-        setSelectedRows([]);
-      }
-    };
+  }, []);
+
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    const { id, ...planeDTO} = newPlane; 
+
+    fetch(`${API_BASE_URL}/Planes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(planeDTO),
+    })
+    .then(response => response.json())
+    .then(data => setRowData([...rowData, data]))
+    .catch(error => console.error('Error:', error));
+  };
   
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedPlane = params.data;
@@ -93,13 +86,23 @@ export const Planes = () => {
     })
       .catch(error => console.error('Error:', error));
   };
+
+  const deleteSelectedRows = () => {
+    if (window.confirm('Are you sure you want to delete the selected rows?')) {
+      selectedRows.forEach(row => {
+        fetch(`${API_BASE_URL}/Planes/${row.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+        .catch(error => console.error('Error:', error));
+      });
   
-  useEffect(() => {
-    fetch(`${API_BASE_URL}/Planes`)
-      .then(response => response.json())
-      .then(data => {console.log('Response:', data);setRowData(data);})
-      .catch(error => console.error('Error:', error));
-  }, []);
+      setRowData(rowData.filter(row => !selectedRows.includes(row)));
+      setSelectedRows([]);
+    }
+  };
   
   return (
     <>
@@ -118,13 +121,13 @@ export const Planes = () => {
           </div>
         <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
         </div>
+        
         <form className="form-container" onSubmit={handleFormSubmit}>
           <input type="text" name="ownerId" value={newPlane.ownerId} onChange={handleInputChange} placeholder="Owner ID" required />
           <input type="text" name="classification" value={newPlane.classification} onChange={handleInputChange} placeholder="Classification" required />
           <input type="text" name="crewCount" value={newPlane.crewCount  || ''} onChange={handleInputChange} placeholder="Crew Count" required />
           <input type="text" name="passengerCapacity" value={newPlane.passengerCapacity  || ''} onChange={handleInputChange} placeholder="Passenger Capacity" required />
           <input type="text" name="cargoCapacity" value={newPlane.cargoCapacity  || ''} onChange={handleInputChange} placeholder="Cargo Capacity" required />
-          
           <button className='my-button' type="submit">Add New Plane </button>
         </form>
       </div>
