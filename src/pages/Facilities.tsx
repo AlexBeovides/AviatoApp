@@ -12,10 +12,23 @@ import Tagliatella from "../assets/images/Tagliatella.jpg";
 
 
 export const Facilities = () => {
+  const hStyle = { color: '#FF385C' };
+
   return (
     <>
       <div className="facilities-section">
         <div className="intro-text">
+          
+          <h1> 
+            <select name="" id="airports-select">
+              <option value="">Aeropuerto Internacional de Jardines del Rey</option>
+              <option value="">Aeropuerto Internacional José Martí</option>
+              <option value="">Aeropuerto Internacional Ignacio Agramonte</option>
+              <option value="">Aeropuerto Gustavo Rizo</option>
+              <option value="">Aeropuerto Carlos Manuel de Céspedes</option>
+              <option value="">Aeropuerto de Pinar del Río</option>
+              <option value="">Aeropuerto de Sancti Spíritus</option>
+            </select> | <span style={hStyle}>Facilities</span></h1>
           <p>
             {" "}
             Hey there! 🛫 Are you ready to explore all the awesome amenities our
@@ -32,43 +45,36 @@ export const Facilities = () => {
           <FacilityCard
             name="Breadway"
             type="Cafeteria"
-            stars={4}
             url={Breadway}
           />
           <FacilityCard
             name="AMXWorkshop"
             type="Workshop"
-            stars={5}
             url={AMXWorkshop}
           />
           <FacilityCard
             name="Tascon"
             type="Clothing store"
-            stars={3}
             url={Tascon}
           />
           <FacilityCard
             name="ArtesaniaDominicana"
             type="Gift shop"
-            stars={3}
             url={ArtesaniaDominicana}
           />
           <FacilityCard
             name="CambioExchange"
             type="Currency exchange office"
-            stars={5}
             url={CambioExchange}
           />
           <FacilityCard 
             name="Ryu" 
             type="Sushi Bar" 
-            stars={4} 
             url={Ryu} 
           />
           <FacilityCard
             name="Tagliatella"
             type="Restaurant"
-            stars={5}
             url={Tagliatella}
           />
         </div>
