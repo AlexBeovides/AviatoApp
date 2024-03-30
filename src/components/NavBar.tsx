@@ -31,6 +31,12 @@ export function NavBar({ setLock }: { setLock: any }) {
         <div className="nav-links">
 
           {token && userRole === 'Admin' && (
+            <Link to="/aviatoapp/clients_manager" target="blank">
+              clients
+            </Link>
+          )}
+
+          {token && userRole === 'Admin' && (
             <Link to="/aviatoapp/airports_manager" target="blank">
               airports
             </Link>
