@@ -6,33 +6,30 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
 
-type Client = {
+type Worker = {
     id: string;
     email: string;
     name: string;
     surname: string;
-    country: string;
-    clientTypeId: number | null;
+    airportId: number | null
     isDeleted:boolean;
     password:string;
 };   
-
-export const ClientsManager = () => {
-  const [rowData, setRowData] = useState<Client[]>([]);
-  const [selectedRows, setSelectedRows] = useState<Client[]>([]);
+export const WorkersManager = () => {
+  const [rowData, setRowData] = useState<Worker[]>([]);
+  const [selectedRows, setSelectedRows] = useState<Worker[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newClient, setNewClient] = useState<Client>({ id: '', email: '', name: '', surname: '', country: '', clientTypeId: null, isDeleted: false, password: '' });
+  const [newWorker, setNewWorker] = useState<Worker>({ id: '', email: '', name: '', surname: '', airportId: null, isDeleted: false, password: '' });
 
   const token = localStorage.getItem('token');
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
     { field: 'isDeleted', headerName: 'Deleted', editable: true, filter:true , cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false' },
-    { field: 'clientTypeId', headerName: 'Client Type ID', editable: true ,filter:true },
+    { field: 'airportId', headerName: 'Airport ID', editable: true ,filter:true },
     { field: 'email', headerName: 'Email', editable: true },
     { field: 'name', headerName: 'Name', editable: true },
     { field: 'surname', headerName: 'Surname', editable: true },
-    { field: 'country', headerName: 'Country', editable: true , filter:true},
   ];
 
   const onGridReady = (params: GridReadyEvent) => {
@@ -40,7 +37,7 @@ export const ClientsManager = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewClient({ ...newClient, [event.target.name]: event.target.value });
+    setNewWorker({ ...newWorker, [event.target.name]: event.target.value });
   };
 
   const onSelectionChanged = () => {
@@ -50,7 +47,7 @@ export const ClientsManager = () => {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Clients`)
+    fetch(`${API_BASE_URL}/Workers`)
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -59,30 +56,30 @@ export const ClientsManager = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
   
-    fetch(`${API_BASE_URL}/Clients`, {
+    fetch(`${API_BASE_URL}/Workers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(newClient),
+      body: JSON.stringify(newWorker),
     })
-    .then(() => fetch(`${API_BASE_URL}/Clients`))
+    .then(() => fetch(`${API_BASE_URL}/Workers`))
     .then(response => response.json())
     .then(data => setRowData(data))
     .catch(error => console.error('Error:', error));
   };
-
-  const onCellValueChanged = (params : CellValueChangedEvent) => {
-    const updatedClient = { ...params.data, password: 'password' };
   
-    fetch(`${API_BASE_URL}/Clients/${updatedClient.id}`, {
+  const onCellValueChanged = (params : CellValueChangedEvent) => {
+    const updatedWorker = { ...params.data, password: 'password' };
+  
+    fetch(`${API_BASE_URL}/Workers/${updatedWorker.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(updatedClient),
+      body: JSON.stringify(updatedWorker),
     })
       .catch(error => console.error('Error:', error));
   };
@@ -90,14 +87,14 @@ export const ClientsManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Clients/${row.id}`, {
+        fetch(`${API_BASE_URL}/Workers/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Clients`))
+      .then(() => fetch(`${API_BASE_URL}/Workers`))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -108,11 +105,11 @@ export const ClientsManager = () => {
 
   return (
     <>
-      <h2 className='page-header'>Clients Data:</h2>
+      <h2 className='page-header'>Workers Data:</h2>
       <div className='section-container'>
         <div className='table-container'>
           <div className="ag-theme-quartz manager-table" style={{ height: 400, width: 800 }}>
-            <AgGridReact<Client>
+            <AgGridReact<Worker>
               rowData={rowData}
               columnDefs={colDefs} 
               onCellValueChanged={onCellValueChanged}
@@ -125,13 +122,12 @@ export const ClientsManager = () => {
         </div>
         
         <form className="form-container" onSubmit={handleFormSubmit}>
-          <input type="text" name="email" value={newClient.email} onChange={handleInputChange} placeholder="Email" required />
-          <input type="text" name="password" value={newClient.password} onChange={handleInputChange} placeholder="Password" required />
-          <input type="text" name="name" value={newClient.name} onChange={handleInputChange} placeholder="Name" required />
-          <input type="text" name="surname" value={newClient.surname} onChange={handleInputChange} placeholder="Surname" required />
-          <input type="text" name="country" value={newClient.country} onChange={handleInputChange} placeholder="Country" required />
-          <input type="number" name="clientTypeId" value={newClient.clientTypeId || ''} onChange={handleInputChange} placeholder="Client Type ID" />
-          <button className='my-button' type="submit">Add New Client</button>
+          <input type="text" name="email" value={newWorker.email} onChange={handleInputChange} placeholder="Email" required />
+          <input type="text" name="password" value={newWorker.password} onChange={handleInputChange} placeholder="Password" required />
+          <input type="text" name="name" value={newWorker.name} onChange={handleInputChange} placeholder="Name" required />
+          <input type="text" name="surname" value={newWorker.surname} onChange={handleInputChange} placeholder="Surname" required />
+          <input type="number" name="airportId" value={newWorker.airportId || ''} onChange={handleInputChange} placeholder="Airport ID" />
+          <button className='my-button' type="submit">Add New Worker</button>
         </form>
       </div>
     </>

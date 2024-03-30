@@ -6,6 +6,7 @@ import { Home } from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { ClientsManager } from "./pages/ClientsManager";
+import { WorkersManager } from "./pages/WorkersManager";
 import { AirportsManager } from "./pages/AirportsManager";
 import { FacilitiesManager } from "./pages/FacilitiesManager";
 import { ServicesManager } from "./pages/ServicesManager";
@@ -26,6 +27,7 @@ function App() {
         <Routes>
           <Route path="/aviatoapp/" element={<Home />}></Route> 
           <Route path="/aviatoapp/clients_manager" element={<ClientsManager />}></Route>
+          <Route path="/aviatoapp/workers_manager" element={<WorkersManager />}></Route>
           <Route path="/aviatoapp/airports_manager" element={<AirportsManager />}></Route>
           <Route path="/aviatoapp/facilities_manager" element={<FacilitiesManager />}></Route>
           <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
