@@ -12,8 +12,9 @@ import { FacilitiesManager } from "./pages/FacilitiesManager";
 import { ServicesManager } from "./pages/ServicesManager";
 import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
+import { Login } from "./pages/LogIn";
 import { Facilities } from "./pages/Facilities";
+import { Services } from "./pages/Services";
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
           <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
+          <Route path="/aviatoapp/services" element={<Services/>}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>
           <Route path="/aviatoapp/login" element={<Login/>}></Route>
         </Routes>
