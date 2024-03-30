@@ -1,13 +1,13 @@
 @import "_variables";
 
-.facilities-section {
+.services-section {
   position: relative;
   height: fit-content;
   background: linear-gradient(45deg, #eeeeee, #faf8f9, #ffffff);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding: 15vh 0 20vh 0;
+  padding: 15vh 10vw 20vh 10vw;
  
 }
 
@@ -44,17 +44,7 @@
   top: 0;
 }
 
-#airports-select{
-  font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
-  font-size: 26px;
-  background: rgb(223, 223, 223);
-  color: rgb(5, 5, 5);
-  border: none;
-  border-radius: 5px;
-  padding: 6px 10px;
-}
-
-.facilities-container {
+.services-container {
   display: grid;
   padding: 1px 100px;
   grid-template-columns: repeat(
@@ -67,7 +57,7 @@
 }
 
 @media (max-width: 900px) {
-  .facilities-section {
+  .services-section {
     padding: 10vh 0 5vh 0;
   }
 
