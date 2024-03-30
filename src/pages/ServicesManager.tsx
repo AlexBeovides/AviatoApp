@@ -6,34 +6,28 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
 
-type Facility = {
+type Service = {
     id: number;
-    name: string;
-    address: string;
-    imgUrl: string;
-    airportId: number | null;
-    facilityTypeId: number | null;
     isDeleted: boolean;
-};  
+    facilityId: number | null;
+    name: string;
+    price: number | null;
+};     
  
-export const FacilitiesManager = () => {
-  const [rowData, setRowData] = useState<Facility[]>([]);
-  const [selectedRows, setSelectedRows] = useState<Facility[]>([]);
+export const ServicesManager = () => {
+  const [rowData, setRowData] = useState<Service[]>([]);
+  const [selectedRows, setSelectedRows] = useState<Service[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newFacility, setNewPlane] = useState<Facility>({  id: 0 , name: '' , address: ''  , 
-  imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
+  const [newService, setNewService] = useState<Service>({ id: 0, isDeleted: false, facilityId: null, name: '', price: null });
 
   const token = localStorage.getItem('token');
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
-    { field: 'isDeleted', headerName: 'Deleted', editable: true , filter: true, 
-    cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
+    { field: 'isDeleted', headerName: 'Deleted', editable: true, filter: true, cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
-    { field: 'address', headerName: 'Address', editable: true },
-    { field: 'imgUrl', headerName: 'Image Url', editable: true },
-    { field: 'airportId', headerName: 'Airport ID', editable: true , filter: true},
-    { field: 'facilityTypeId', headerName: 'Facility Type ID', editable: true , filter: true }
+    { field: 'facilityId', headerName: 'Facility ID', editable: true, filter: true },
+    { field: 'price', headerName: 'Price', editable: true, filter: true }
   ];
 
   const onGridReady = (params: GridReadyEvent) => {
@@ -41,7 +35,7 @@ export const FacilitiesManager = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setNewPlane({ ...newFacility, [event.target.name]: event.target.value });
+    setNewService({ ...newService, [event.target.name]: event.target.value });
   };
 
   const onSelectionChanged = () => {
@@ -51,7 +45,7 @@ export const FacilitiesManager = () => {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Facilities`)
+    fetch(`${API_BASE_URL}/Services`)
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -59,15 +53,15 @@ export const FacilitiesManager = () => {
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { id, ...facilityDTO} = newFacility; 
+    const { id, ...serviceDTO} = newService; 
 
-    fetch(`${API_BASE_URL}/Facilities`, {
+    fetch(`${API_BASE_URL}/Services`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(facilityDTO),
+      body: JSON.stringify(serviceDTO),
     })
     .then(response => response.json())
     .then(data => setRowData([...rowData, data]))
@@ -75,15 +69,15 @@ export const FacilitiesManager = () => {
   };
 
   const onCellValueChanged = (params : CellValueChangedEvent) => {
-    const updatedFacility = params.data;
+    const updatedService = params.data;
 
-    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}`, {
+    fetch(`${API_BASE_URL}/Services/${updatedService.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(updatedFacility),
+      body: JSON.stringify(updatedService),
     })
       .catch(error => console.error('Error:', error));
   };
@@ -91,14 +85,14 @@ export const FacilitiesManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Facilities/${row.id}`, {
+        fetch(`${API_BASE_URL}/Services/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Facilities`))
+      .then(() => fetch(`${API_BASE_URL}/Services`))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -109,11 +103,11 @@ export const FacilitiesManager = () => {
 
   return (
   <>
-    <h2 className='page-header'>Facilities Data:</h2>
+    <h2 className='page-header'>Services Data:</h2>
     <div className='section-container'>
       <div className='table-container'>
         <div className="ag-theme-quartz manager-table" style={{ height: 400, width: 800 }}>
-          <AgGridReact<Facility>
+          <AgGridReact<Service>
             rowData={rowData}
             columnDefs={colDefs} 
             onCellValueChanged={onCellValueChanged}
@@ -126,16 +120,13 @@ export const FacilitiesManager = () => {
       </div>
       
       <form className="form-container" onSubmit={handleFormSubmit}>
-        <input type="text" name="name" value={newFacility.name} onChange={handleInputChange} placeholder="Name" required />
-        <input type="text" name="address" value={newFacility.address} onChange={handleInputChange} placeholder="Address" required />
-        <input type="text" name="imgUrl" value={newFacility.imgUrl} onChange={handleInputChange} placeholder="Image URL" required />
-        <input type="text" name="airportId" value={newFacility.airportId || ''} onChange={handleInputChange} placeholder="Airport ID" />
-        <input type="text" name="facilityTypeId" value={newFacility.facilityTypeId || ''} onChange={handleInputChange} placeholder="Facility Type ID" />
-        <button className='my-button' type="submit">Add New Facility</button>
+        <input type="text" name="name" value={newService.name} onChange={handleInputChange} placeholder="Name" required />
+        <input type="text" name="facilityId" value={newService.facilityId || ''} onChange={handleInputChange} placeholder="Facility ID" />
+        <input type="text" name="price" value={newService.price || ''} onChange={handleInputChange} placeholder="Price" />
+        <button className='my-button' type="submit">Add New Service</button>
       </form>
     </div>
   </>
 );
 };
-
  

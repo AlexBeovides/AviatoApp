@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import { AirportsManager } from "./pages/AirportsManager";
 import { FacilitiesManager } from "./pages/FacilitiesManager";
+import { ServicesManager } from "./pages/ServicesManager";
 import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
@@ -25,6 +26,7 @@ function App() {
           <Route path="/aviatoapp/" element={<Home />}></Route> 
           <Route path="/aviatoapp/airports_manager" element={<AirportsManager />}></Route>
           <Route path="/aviatoapp/facilities_manager" element={<FacilitiesManager />}></Route>
+          <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
           <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>

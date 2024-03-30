@@ -5,7 +5,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
- 
 
 type Airport = {
     id: number;
@@ -16,7 +15,6 @@ type Airport = {
     isDeleted: boolean;
 };
 
- 
 export const AirportsManager = () => {
   const [rowData, setRowData] = useState<Airport[]>([]);
   const [selectedRows, setSelectedRows] = useState<Airport[]>([]);
@@ -28,11 +26,12 @@ export const AirportsManager = () => {
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
+    { field: 'isDeleted', headerName: 'Deleted', editable: true , filter: true,
+    cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
     { field: 'address', headerName: 'Address', editable: true },
     { field: 'latitude', headerName: 'Latitude', editable: true },
-    { field: 'longitude', headerName: 'Longitude', editable: true },
-    { field: 'isDeleted', headerName: 'Deleted', editable: true , filter: true }
+    { field: 'longitude', headerName: 'Longitude', editable: true }
   ];
 
   const onGridReady = (params: GridReadyEvent) => {
@@ -89,17 +88,19 @@ export const AirportsManager = () => {
 
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
-      selectedRows.forEach(row => {
+      Promise.all(selectedRows.map(row => 
         fetch(`${API_BASE_URL}/Airports/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
-        .catch(error => console.error('Error:', error));
-      });
+      ))
+      .then(() => fetch(`${API_BASE_URL}/Airports`))
+      .then(response => response.json())
+      .then(data => setRowData(data))
+      .catch(error => console.error('Error:', error));
   
-      setRowData(rowData.filter(row => !selectedRows.includes(row)));
       setSelectedRows([]);
     }
   };

@@ -27,12 +27,13 @@ export const PlanesManager = () => {
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
+    { field: 'isDeleted', headerName: 'Deleted', editable: true ,  filter:true,
+    cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'ownerId', headerName: 'Owner ID', editable: true , filter: true},
     { field: 'classification', headerName: 'Classification', editable: true, filter: true },
     { field: 'crewCount', headerName: 'Crew Count', editable: true },
     { field: 'passengerCapacity', headerName: 'Passenger Capacity', editable: true },
     { field: 'cargoCapacity', headerName: 'Cargo Capacity', editable: true },
-    { field: 'isDeleted', headerName: 'Deleted', editable: true },
   ];
 
   const onGridReady = (params: GridReadyEvent) => {
@@ -89,17 +90,19 @@ export const PlanesManager = () => {
 
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
-      selectedRows.forEach(row => {
+      Promise.all(selectedRows.map(row => 
         fetch(`${API_BASE_URL}/Planes/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
-        .catch(error => console.error('Error:', error));
-      });
+      ))
+      .then(() => fetch(`${API_BASE_URL}/Planes`))
+      .then(response => response.json())
+      .then(data => setRowData(data))
+      .catch(error => console.error('Error:', error));
   
-      setRowData(rowData.filter(row => !selectedRows.includes(row)));
       setSelectedRows([]);
     }
   };
