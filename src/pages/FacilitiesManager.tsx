@@ -50,7 +50,7 @@ export const FacilitiesManager = () => {
       setSelectedRows(gridApi.getSelectedRows());
     }
   };
-console.log(userAirportId);
+  
   useEffect(() => {
     fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`)
       .then(response => response.json())

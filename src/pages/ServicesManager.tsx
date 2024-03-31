@@ -3,8 +3,9 @@ import { API_BASE_URL } from '../config';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from "../AuthContext";
 
 type Service = {
     id: number;
@@ -21,6 +22,7 @@ export const ServicesManager = () => {
   const [newService, setNewService] = useState<Service>({ id: 0, isDeleted: false, facilityId: null, name: '', price: null });
 
   const token = localStorage.getItem('token');
+  const { userAirportId } = useContext(AuthContext);
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
@@ -45,7 +47,7 @@ export const ServicesManager = () => {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Services`)
+    fetch(`${API_BASE_URL}/Services?airportId=${userAirportId}`)
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -55,7 +57,7 @@ export const ServicesManager = () => {
     event.preventDefault();
     const { id, ...serviceDTO} = newService; 
 
-    fetch(`${API_BASE_URL}/Services`, {
+    fetch(`${API_BASE_URL}/Services?airportId=${userAirportId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -71,7 +73,7 @@ export const ServicesManager = () => {
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedService = params.data;
 
-    fetch(`${API_BASE_URL}/Services/${updatedService.id}`, {
+    fetch(`${API_BASE_URL}/Services/${updatedService.id}?airportId=${userAirportId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +87,7 @@ export const ServicesManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Services/${row.id}`, {
+        fetch(`${API_BASE_URL}/Services/${row.id}?airportId=${userAirportId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
