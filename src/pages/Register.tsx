@@ -54,11 +54,11 @@ export const Register = () =>{
             const { confirmPassword, ...valuesToSend } = formValues;
 
             const response = await fetch(`${API_BASE_URL}/Account/register`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(valuesToSend)
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(valuesToSend)
             });
     
             let data;
