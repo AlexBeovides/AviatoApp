@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
 import { AuthContext } from "../AuthContext";
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
+
 
 interface FormValues { 
   email: string;
@@ -42,7 +44,7 @@ export const Login = () => {
       setIsLoading(true);
       
       try {
-        const response = await fetch('https://localhost:7210/api/Account/login', {
+        const response = await fetch(`${API_BASE_URL}/Account/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

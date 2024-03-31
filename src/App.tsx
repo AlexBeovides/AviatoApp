@@ -10,6 +10,7 @@ import { WorkersManager } from "./pages/WorkersManager";
 import { AirportsManager } from "./pages/AirportsManager";
 import { FacilitiesManager } from "./pages/FacilitiesManager";
 import { ServicesManager } from "./pages/ServicesManager";
+import { ReviewsManager } from "./pages/ReviewsManager";
 import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
@@ -32,6 +33,7 @@ function App() {
           <Route path="/aviatoapp/airports_manager" element={<AirportsManager />}></Route>
           <Route path="/aviatoapp/facilities_manager" element={<FacilitiesManager />}></Route>
           <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
+          <Route path="/aviatoapp/reviews_manager" element={<ReviewsManager />}></Route>
           <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
           <Route path="/aviatoapp/services" element={<Services/>}></Route>

@@ -30,12 +30,6 @@ export function NavBar({ setLock }: { setLock: any }) {
         </Link>
         <div className="nav-links">
 
-          {token && userRole === 'Security' && (
-            <Link to="/aviatoapp/clients_manager" target="blank">
-              clients
-            </Link>
-          )}
-
           {token && userRole === 'Admin' && (
             <Link to="/aviatoapp/workers_manager" target="blank">
               workers
@@ -48,12 +42,6 @@ export function NavBar({ setLock }: { setLock: any }) {
             </Link>
           )}
 
-          {token && userRole === 'Admin' && (
-            <Link to="/aviatoapp/planes_manager" target="blank">
-              planes
-            </Link>
-          )}
-
           {token && (userRole === 'Director') && (
             <Link to="/aviatoapp/facilities_manager" target="blank">
               facilities
@@ -63,6 +51,24 @@ export function NavBar({ setLock }: { setLock: any }) {
           {token && (userRole === 'Director') && (
             <Link to="/aviatoapp/services_manager" target="blank">
               services
+            </Link>
+          )}
+
+          {token && (userRole === 'Director') && (
+            <Link to="/aviatoapp/reviews_manager" target="blank">
+              reviews
+            </Link>
+          )}
+
+          {token && userRole === 'Security' && (
+            <Link to="/aviatoapp/clients_manager" target="blank">
+              clients
+            </Link>
+          )}
+
+          {token && userRole === 'Security' && (
+            <Link to="/aviatoapp/planes_manager" target="blank">
+              planes
             </Link>
           )}
 

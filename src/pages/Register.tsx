@@ -2,6 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
 import { Link } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 interface FormValues { 
   email: string;
@@ -52,7 +53,7 @@ export const Register = () =>{
           try {
             const { confirmPassword, ...valuesToSend } = formValues;
 
-            const response = await fetch('https://localhost:7210/api/Account/register', {
+            const response = await fetch(`${API_BASE_URL}/Account/register`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
