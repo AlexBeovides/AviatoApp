@@ -18,10 +18,7 @@ type Review = {
  
 export const ReviewsManager = () => {
   const [rowData, setRowData] = useState<Review[]>([]);
-  const [gridApi, setGridApi] = useState<GridApi | null>(null);
-
   const token = localStorage.getItem('token');
-  const { userAirportId } = useContext(AuthContext);
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false},
@@ -32,15 +29,15 @@ export const ReviewsManager = () => {
     { field: 'reviewedAt', headerName: 'Reviewed dAt' },
   ];
 
-  const onGridReady = (params: GridReadyEvent) => {
-    setGridApi(params.api);
-  };
-
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Reviews?airportId=${userAirportId}`)
-      .then(response => response.json())
-      .then(data => {console.log('Response:', data); setRowData(data);})
-      .catch(error => console.error('Error:', error));
+    fetch(`${API_BASE_URL}/Reviews`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    .then(response => response.json())
+    .then(data => setRowData(data))
+    .catch(error => console.error('Error:', error));
   }, []);
 
   return (
@@ -52,7 +49,6 @@ export const ReviewsManager = () => {
           <AgGridReact<Review>
             rowData={rowData}
             columnDefs={colDefs} 
-            onGridReady={onGridReady}
             />
         </div>
       </div>
