@@ -12,7 +12,7 @@ import { FacilitiesManager } from "./pages/FacilitiesManager";
 import { ServicesManager } from "./pages/ServicesManager";
 import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
+import { Login } from "./pages/LogIn";
 import { Facilities } from "./pages/Facilities";
 import { Services } from "./pages/Services";
 
