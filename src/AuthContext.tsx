@@ -1,10 +1,12 @@
-import React, { useState, useEffect,useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const AuthContext = React.createContext({
   token: null as string | null,
   setToken: (value: string | null) => {},
   userRole: null as string | null,
   setUserRole: (value: string | null) => {},
+  userAirportId: null as number | null,
+  setUserAirportId: (value: number | null) => {},
 });
 
 interface AuthProviderProps {
@@ -14,23 +16,24 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
   const [userRole, setUserRole] = useState(localStorage.getItem('user_role') || null);
+  const [userAirportId, setUserAirportId] = useState(Number(localStorage.getItem('user_airport_id')) || null);
 
   useEffect(() => {
-    // Load the initial state from localStorage here if needed
     const token = localStorage.getItem('token');
     if (token) {
       setToken(token);
       setUserRole(localStorage.getItem('user_role'));
+      setUserAirportId(Number(localStorage.getItem('user_airport_id')));
     }
   }, []);
-
-  // Load the initial state from localStorage here if needed 
 
   const value = { 
     token,
     setToken,
     userRole,
     setUserRole,
+    userAirportId,
+    setUserAirportId,
   };
 
   return (

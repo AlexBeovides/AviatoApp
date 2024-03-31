@@ -28,6 +28,7 @@ export const WorkersManager = () => {
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
     { field: 'isDeleted', headerName: 'Deleted', editable: true, filter:true , cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false' },
     { field: 'airportId', headerName: 'Airport ID', editable: true ,filter:true },
+    { field: 'role', headerName: 'Role', editable: true ,filter:true },
     { field: 'email', headerName: 'Email', editable: true },
     { field: 'name', headerName: 'Name', editable: true },
     { field: 'surname', headerName: 'Surname', editable: true },

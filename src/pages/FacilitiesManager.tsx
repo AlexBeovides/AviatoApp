@@ -3,8 +3,9 @@ import { API_BASE_URL } from '../config';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from "../AuthContext";
 
 type Facility = {
     id: number;
@@ -24,6 +25,7 @@ export const FacilitiesManager = () => {
   imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
 
   const token = localStorage.getItem('token');
+  const { userAirportId } = useContext(AuthContext);
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
@@ -32,7 +34,6 @@ export const FacilitiesManager = () => {
     { field: 'name', headerName: 'Name', editable: true },
     { field: 'address', headerName: 'Address', editable: true },
     { field: 'imgUrl', headerName: 'Image Url', editable: true },
-    { field: 'airportId', headerName: 'Airport ID', editable: true , filter: true},
     { field: 'facilityTypeId', headerName: 'Facility Type ID', editable: true , filter: true }
   ];
 
@@ -49,9 +50,9 @@ export const FacilitiesManager = () => {
       setSelectedRows(gridApi.getSelectedRows());
     }
   };
-
+console.log(userAirportId);
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Facilities`)
+    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`)
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -59,9 +60,10 @@ export const FacilitiesManager = () => {
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { id, ...facilityDTO} = newFacility; 
+    const { id, ...facilityDTO} = newFacility;
+    facilityDTO.airportId = userAirportId;
 
-    fetch(`${API_BASE_URL}/Facilities`, {
+    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -77,7 +79,7 @@ export const FacilitiesManager = () => {
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedFacility = params.data;
 
-    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}`, {
+    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}?airportId=${userAirportId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -91,14 +93,14 @@ export const FacilitiesManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Facilities/${row.id}`, {
+        fetch(`${API_BASE_URL}/Facilities/${row.id}?airportId=${userAirportId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Facilities`))
+      .then(() => fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -129,7 +131,6 @@ export const FacilitiesManager = () => {
         <input type="text" name="name" value={newFacility.name} onChange={handleInputChange} placeholder="Name" required />
         <input type="text" name="address" value={newFacility.address} onChange={handleInputChange} placeholder="Address" required />
         <input type="text" name="imgUrl" value={newFacility.imgUrl} onChange={handleInputChange} placeholder="Image URL" required />
-        <input type="text" name="airportId" value={newFacility.airportId || ''} onChange={handleInputChange} placeholder="Airport ID" />
         <input type="text" name="facilityTypeId" value={newFacility.facilityTypeId || ''} onChange={handleInputChange} placeholder="Facility Type ID" />
         <button className='my-button' type="submit">Add New Facility</button>
       </form>
