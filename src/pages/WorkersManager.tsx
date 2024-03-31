@@ -11,6 +11,7 @@ type Worker = {
     email: string;
     name: string;
     surname: string;
+    role:string;
     airportId: number | null
     isDeleted:boolean;
     password:string;
@@ -19,7 +20,7 @@ export const WorkersManager = () => {
   const [rowData, setRowData] = useState<Worker[]>([]);
   const [selectedRows, setSelectedRows] = useState<Worker[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newWorker, setNewWorker] = useState<Worker>({ id: '', email: '', name: '', surname: '', airportId: null, isDeleted: false, password: '' });
+  const [newWorker, setNewWorker] = useState<Worker>({ id: '', email: '', name: '', surname: '', role: '', airportId: null, isDeleted: false, password: '' });
 
   const token = localStorage.getItem('token');
 
@@ -126,6 +127,7 @@ export const WorkersManager = () => {
           <input type="text" name="password" value={newWorker.password} onChange={handleInputChange} placeholder="Password" required />
           <input type="text" name="name" value={newWorker.name} onChange={handleInputChange} placeholder="Name" required />
           <input type="text" name="surname" value={newWorker.surname} onChange={handleInputChange} placeholder="Surname" required />
+          <input type="text" name="role" value={newWorker.role} onChange={handleInputChange} placeholder="Role" required />
           <input type="number" name="airportId" value={newWorker.airportId || ''} onChange={handleInputChange} placeholder="Airport ID" />
           <button className='my-button' type="submit">Add New Worker</button>
         </form>
