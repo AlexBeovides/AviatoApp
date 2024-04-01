@@ -16,6 +16,7 @@ import { Register } from "./pages/Register";
 import { LogIn } from "./pages/LogIn";
 import { Facilities } from "./pages/Facilities";
 import { Services } from "./pages/Services";
+import { MyPlanes } from "./pages/MyPlanes";
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -35,6 +36,7 @@ function App() {
           <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
           <Route path="/aviatoapp/reviews_manager" element={<ReviewsManager />}></Route>
           <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
+          <Route path="/aviatoapp/myplanes" element={<MyPlanes />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
           <Route path="/aviatoapp/services" element={<Services/>}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>

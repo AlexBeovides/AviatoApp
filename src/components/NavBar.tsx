@@ -78,6 +78,12 @@ export function NavBar({ setLock }: { setLock: any }) {
           </Link>
           )}
 
+          {token && userRole === 'Client' && (
+          <Link to="/aviatoapp/myplanes" target="blank">
+            my planes
+          </Link>
+          )}
+
           {token ? (
           <div onClick={handleLogout}>
             log out
