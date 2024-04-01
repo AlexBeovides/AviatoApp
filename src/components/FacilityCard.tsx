@@ -6,6 +6,7 @@ interface CardProps {
   name: string;
   type: string;
   url: string;
+  airportId: number;
 }
 
 export const FacilityCard = (props: CardProps) => {
@@ -13,9 +14,10 @@ export const FacilityCard = (props: CardProps) => {
   const propName = props.name;
   const propType = props.type;
   const propId = props.id;
+  const propAirportId = props.airportId;
 
   const handleClick = () => () => {
-    window.location.href = `/aviatoapp/services?facilityName=${propName}&facilityId=${propId}`;
+    window.location.href = `/aviatoapp/services?airportId=${propAirportId}&facilityId=${propId}`;
   };
 
   return (

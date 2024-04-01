@@ -2,19 +2,19 @@
 import "../styles/ServiceCard.scss";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
-import Coffee from "../assets/images/coffee.png";
 
 interface CardProps {
+  id: number;
   name: string;
+  description: string;
   price: number;
+  imgUrl: string;
   averageRating: number;
 }
 
 interface Review {
-  id: number;
   rating: number;
   comment: string;
-  clientId: string | null;
   serviceId: number | null;
 }
 
@@ -22,16 +22,16 @@ export const ServiceCard = (props: CardProps) => {
   const [activeStars, setActiveStars] = useState(0);
   const [clickedStars, setClickedStars] = useState(0);
   const [newReview, setnewReview] = useState<Review>({
-    id: 0,
     rating: 1,
     comment: "",
-    clientId: "",
     serviceId: null,
   });
 
+  const propId = props.id;
   const propPrice = props.price;
   const propName = props.name;
   const propAverageRating = props.averageRating;
+  const propImgUrl = props.imgUrl;
 
   const token = localStorage.getItem("token");
 
@@ -58,13 +58,7 @@ export const ServiceCard = (props: CardProps) => {
 
   const handleStarClick = (index: number) => {
     setClickedStars(index + 1);
-    setnewReview({
-      ...newReview,
-      rating: clickedStars + 1,
-      comment: "",
-      clientId: "",
-      serviceId: 0,
-    });
+    setnewReview({ rating: index, comment: "", serviceId: propId });
     handleReviewPost();
   };
 
@@ -91,7 +85,7 @@ export const ServiceCard = (props: CardProps) => {
         <div className="card__image-container">
           <div
             className="card__image"
-            style={{ backgroundImage: `url(${Coffee})` }}
+            style={{ backgroundImage: `url(${propImgUrl})` }}
           ></div>
         </div>
       }

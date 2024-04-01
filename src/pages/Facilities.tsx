@@ -118,6 +118,9 @@ export const Facilities = () => {
                   type={facility.facilityType}
                   url={facility.imgUrl}
                   id={facility.id}
+                  airportId={
+                    airportsData[selectRef.current.selectedIndex - 1].id
+                  }
                 />
               )
           )}
