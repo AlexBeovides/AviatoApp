@@ -4,8 +4,7 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
-import { useEffect, useState, useContext } from 'react';
-import { AuthContext } from "../AuthContext";
+import { useEffect, useState } from 'react';
 
 type Facility = {
     id: number;
@@ -26,7 +25,6 @@ export const FacilitiesManager = () => {
    address: ''  , imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
 
   const token = localStorage.getItem('token');
-  const { userAirportId } = useContext(AuthContext);
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
@@ -68,7 +66,6 @@ export const FacilitiesManager = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { id, ...facilityDTO} = newFacility;
-    facilityDTO.airportId = userAirportId;
 
     fetch(`${API_BASE_URL}/Facilities`, {
       method: 'POST',

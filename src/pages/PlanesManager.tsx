@@ -122,7 +122,7 @@ export const PlanesManager = () => {
               rowSelection="multiple"
               />
           </div>
-        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
+        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Planes</button>
         </div>
         
         <form className="form-container" onSubmit={handleFormSubmit}>

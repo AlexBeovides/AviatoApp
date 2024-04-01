@@ -1,7 +1,7 @@
 import "../styles/Services.scss";
 import { ServiceCard } from "../components/ServiceCard";
 import { API_BASE_URL } from "../config";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 type Service = {
   id: number;

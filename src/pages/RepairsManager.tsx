@@ -58,7 +58,7 @@ export const RepairsManager = () => {
       },
     })
       .then(response => response.json())
-      .then(data => {console.log('Response:', data); setRowData(data);})
+      .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
   }, []);
 

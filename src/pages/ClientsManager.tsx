@@ -121,7 +121,7 @@ export const ClientsManager = () => {
               rowSelection="multiple"
               />
           </div>
-        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
+        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Clients</button>
         </div>
         
         <form className="form-container" onSubmit={handleFormSubmit}>
