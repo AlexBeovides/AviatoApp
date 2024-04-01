@@ -17,7 +17,7 @@ interface FormErrors {
   password?: string;
 }
 
-export const Login = () => {
+export const LogIn = () => {
   const { setToken,setUserRole,setUserAirportId } = useContext(AuthContext);
 
   const initialValues: FormValues = { 

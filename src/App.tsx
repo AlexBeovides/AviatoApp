@@ -13,7 +13,7 @@ import { ServicesManager } from "./pages/ServicesManager";
 import { ReviewsManager } from "./pages/ReviewsManager";
 import { PlanesManager } from "./pages/PlanesManager";
 import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
+import { LogIn } from "./pages/LogIn";
 import { Facilities } from "./pages/Facilities";
 import { Services } from "./pages/Services";
 
@@ -38,7 +38,7 @@ function App() {
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
           <Route path="/aviatoapp/services" element={<Services/>}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>
-          <Route path="/aviatoapp/login" element={<Login/>}></Route>
+          <Route path="/aviatoapp/login" element={<LogIn/>}></Route>
         </Routes>
 
         <FooterSection />
