@@ -9,8 +9,17 @@
   justify-self: center;
   justify-content: center;
   padding-top: 20px;
-  height: 250px;
+  height: 400px;
   width: 300px;
+}
+
+.services-section .card__image-container {
+  position: relative;
+  height: 45%;
+}
+
+.services-section .card__image {
+  transform: rotate(7deg) translate(-15px, -20%);
 }
 
 .services-section h3 {
@@ -36,7 +45,7 @@
   border: #ff385c 3px solid;
   color: #ff385c;
   border-radius: 25px;
-  margin-top: 20px;
+  margin-top: 18px;
   font-size: 15px;
   width: 200px !important;
 }
@@ -59,7 +68,7 @@
 .stars-container {
   display: flex;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 13px;
 }
 
 .stars-container span {

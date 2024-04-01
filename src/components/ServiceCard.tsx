@@ -1,6 +1,8 @@
 /*import "../styles/Card.scss";*/
 import "../styles/ServiceCard.scss";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../config";
+import Coffee from "../assets/images/coffee.png";
 
 interface CardProps {
   name: string;
@@ -8,13 +10,41 @@ interface CardProps {
   averageRating: number;
 }
 
+interface Review {
+  id: number;
+  rating: number;
+  comment: string;
+  clientId: string | null;
+  serviceId: number | null;
+}
+
 export const ServiceCard = (props: CardProps) => {
   const [activeStars, setActiveStars] = useState(0);
   const [clickedStars, setClickedStars] = useState(0);
+  const [newReview, setnewReview] = useState<Review>({
+    id: 0,
+    rating: 1,
+    comment: "",
+    clientId: "",
+    serviceId: null,
+  });
 
   const propPrice = props.price;
   const propName = props.name;
   const propAverageRating = props.averageRating;
+
+  const token = localStorage.getItem("token");
+
+  const handleReviewPost = () => {
+    fetch(`${API_BASE_URL}/Reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(newReview),
+    });
+  };
 
   const handleStarHover = (index: number) => {
     setActiveStars(index + 1);
@@ -28,6 +58,14 @@ export const ServiceCard = (props: CardProps) => {
 
   const handleStarClick = (index: number) => {
     setClickedStars(index + 1);
+    setnewReview({
+      ...newReview,
+      rating: clickedStars + 1,
+      comment: "",
+      clientId: "",
+      serviceId: 0,
+    });
+    handleReviewPost();
   };
 
   const stars = [];
@@ -49,14 +87,14 @@ export const ServiceCard = (props: CardProps) => {
 
   return (
     <div className="card">
-      {/*
+      {
         <div className="card__image-container">
           <div
             className="card__image"
-            style={{ backgroundImage: `url(${propUrl})` }}
+            style={{ backgroundImage: `url(${Coffee})` }}
           ></div>
         </div>
-        */}
+      }
       <div className="card__info">
         <div className="card__info--title">
           <h3>{propName}</h3>
@@ -67,7 +105,7 @@ export const ServiceCard = (props: CardProps) => {
             {stars}
             <span>{propAverageRating}</span>
           </div>
-          <button className="fluid ui button">Solicit</button>
+          <button className="fluid ui button">Request</button>
         </div>
       </div>
     </div>
