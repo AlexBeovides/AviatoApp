@@ -72,6 +72,12 @@ export function NavBar({ setLock }: { setLock: any }) {
             </Link>
           )}
 
+          {token && userRole === 'Security' && (
+            <Link to="/aviatoapp/flights_manager" target="blank">
+              flights
+            </Link>
+          )}  
+
           {token && userRole === 'Client' && (
           <Link to="/aviatoapp/facilities" target="blank">
             facilities

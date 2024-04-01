@@ -3,9 +3,8 @@ import { API_BASE_URL } from '../config';
 import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
-import { useEffect, useState, useContext } from 'react';
-import { AuthContext } from "../AuthContext";
+import { ColDef } from 'ag-grid-community';
+import { useEffect, useState } from 'react';
 
 type Review = {
     id: number;
@@ -52,7 +51,6 @@ export const ReviewsManager = () => {
             />
         </div>
       </div>
-
     </div>
   </>
 );
