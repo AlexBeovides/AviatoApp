@@ -15,7 +15,7 @@ type Facility = {
   name: string;
   address: string;
   imgUrl: string;
-  FacilityTypeId: number;
+  FacilityType: string;
   isDeleted: Boolean;
 };
 
@@ -25,14 +25,20 @@ export const Facilities = () => {
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [selectWidth, setSelectWidth] = useState("auto");
 
+  const token = localStorage.getItem('token');
+
   const getFacilities = (airportId: number) => {
-    fetch(`${API_BASE_URL}/Facilities?airportId=${airportId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Response:", data);
-        setFacilitiesData(data);
-      })
-      .catch((error) => console.error("Error:", error));
+    fetch(`${API_BASE_URL}/Facilities/WithType/${airportId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Response:", data);
+      setFacilitiesData(data);
+    })
+    .catch((error) => console.error("Error:", error));
   };
 
   const handleSelectChange = () => {
