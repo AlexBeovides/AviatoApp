@@ -65,7 +65,7 @@ export const RepairsManager = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { id, ...repairDTO} = newRepair; 
-
+  
     fetch(`${API_BASE_URL}/Repairs`, {
       method: 'POST',
       headers: {
@@ -74,8 +74,22 @@ export const RepairsManager = () => {
       },
       body: JSON.stringify(repairDTO),
     })
-    .then(response => response.json())
-    .then(data => setRowData([...rowData, data]))
+    .then(() => {
+      // Fetch the updated data after successful post
+      fetch(`${API_BASE_URL}/Repairs`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Update the state with the new data
+        setRowData(data);
+        // Reset the form
+        setNewRepair({ id: 0, isDeleted: false, facilityId: null, repairTypeId: null, name: '', description: '', imgUrl: '', price: null });
+      })
+      .catch(error => console.error('Error:', error));
+    })
     .catch(error => console.error('Error:', error));
   };
 
@@ -103,7 +117,11 @@ export const RepairsManager = () => {
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Services`))
+      .then(() => fetch(`${API_BASE_URL}/Repairs`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
