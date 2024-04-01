@@ -20,7 +20,8 @@ import { LogIn } from "./pages/LogIn";
 import { Facilities } from "./pages/Facilities";
 import { Services } from "./pages/Services";
 import { MyPlanes } from "./pages/MyPlanes";
-FlightsManager
+import { Stats } from "./pages/Stats";
+FlightsManager;
 
 function App() {
   const [locked, setLock] = useState(false);
@@ -32,22 +33,53 @@ function App() {
         <NavBar setLock={setLock} />
 
         <Routes>
-          <Route path="/aviatoapp/" element={<Home />}></Route> 
-          <Route path="/aviatoapp/clients_manager" element={<ClientsManager />}></Route>
-          <Route path="/aviatoapp/workers_manager" element={<WorkersManager />}></Route>
-          <Route path="/aviatoapp/airports_manager" element={<AirportsManager />}></Route>
-          <Route path="/aviatoapp/facilities_manager" element={<FacilitiesManager />}></Route>
-          <Route path="/aviatoapp/services_manager" element={<ServicesManager />}></Route>
-          <Route path="/aviatoapp/reviews_manager" element={<ReviewsManager />}></Route>
-          <Route path="/aviatoapp/planes_manager" element={<PlanesManager />}></Route>
-          <Route path="/aviatoapp/flights_manager" element={<FlightsManager />}></Route>
-          <Route path="/aviatoapp/repairs_manager" element={<RepairsManager />}></Route>
-          <Route path="/aviatoapp/unchecked_flights" element={<UncheckedFlights />}></Route>
+          <Route path="/aviatoapp/" element={<Home />}></Route>
+          <Route
+            path="/aviatoapp/clients_manager"
+            element={<ClientsManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/workers_manager"
+            element={<WorkersManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/airports_manager"
+            element={<AirportsManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/facilities_manager"
+            element={<FacilitiesManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/services_manager"
+            element={<ServicesManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/reviews_manager"
+            element={<ReviewsManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/planes_manager"
+            element={<PlanesManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/flights_manager"
+            element={<FlightsManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/repairs_manager"
+            element={<RepairsManager />}
+          ></Route>
+          <Route
+            path="/aviatoapp/unchecked_flights"
+            element={<UncheckedFlights />}
+          ></Route>
           <Route path="/aviatoapp/myplanes" element={<MyPlanes />}></Route>
           <Route path="/aviatoapp/facilities" element={<Facilities />}></Route>
-          <Route path="/aviatoapp/services" element={<Services/>}></Route>
+          <Route path="/aviatoapp/services" element={<Services />}></Route>
           <Route path="/aviatoapp/register" element={<Register />}></Route>
-          <Route path="/aviatoapp/login" element={<LogIn/>}></Route>
+          <Route path="/aviatoapp/login" element={<LogIn />}></Route>
+          <Route path="/aviatoapp/stats" element={<Stats />}></Route>
         </Routes>
 
         <FooterSection />
