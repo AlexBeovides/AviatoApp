@@ -53,8 +53,13 @@ export const FacilitiesManager = () => {
     }
   };
   
+
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`)
+    fetch(`${API_BASE_URL}/Facilities`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -65,7 +70,7 @@ export const FacilitiesManager = () => {
     const { id, ...facilityDTO} = newFacility;
     facilityDTO.airportId = userAirportId;
 
-    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`, {
+    fetch(`${API_BASE_URL}/Facilities`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,7 +86,7 @@ export const FacilitiesManager = () => {
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedFacility = params.data;
 
-    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}?airportId=${userAirportId}`, {
+    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -95,14 +100,18 @@ export const FacilitiesManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Facilities/${row.id}?airportId=${userAirportId}`, {
+        fetch(`${API_BASE_URL}/Facilities/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`))
+      .then(() => fetch(`${API_BASE_URL}/Facilities`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -126,7 +135,7 @@ export const FacilitiesManager = () => {
             rowSelection="multiple"
             />
         </div>
-      <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
+      <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Facilities</button>
       </div>
       
       <form className="form-container" onSubmit={handleFormSubmit}>
