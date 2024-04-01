@@ -2,6 +2,7 @@ import "../styles/Card.scss";
 import "../styles/FacilityCard.scss";
 
 interface CardProps {
+  id: number;
   name: string;
   type: string;
   url: string;
@@ -11,10 +12,11 @@ export const FacilityCard = (props: CardProps) => {
   const propUrl = props.url;
   const propName = props.name;
   const propType = props.type;
+  const propId = props.id;
 
   const handleClick = () => () => {
-    window.location.href='/aviatoapp/services';
-  }
+    window.location.href = `/aviatoapp/services?facilityName=${propName}&facilityId=${propId}`;
+  };
 
   return (
     <div className="card" onClick={handleClick()}>

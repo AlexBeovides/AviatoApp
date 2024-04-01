@@ -1,29 +1,5 @@
-.card__info--price {
-  text-align: right;
-  color: orangered;
-}
-
-.stars-container {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.star {
-  height: 17px;
-  width: 17px;
-  background-repeat: no-repeat;
-}
-
-.active {
-  background-image: url("../assets/icons/star-active.svg");
-}
-
-.inactive {
-  background-image: url("../assets/icons/star-inactive.svg");
-}
-
 .card {
   height: 300px;
   width: 400px;
-  cursor:pointer;
+  cursor: pointer;
 }
