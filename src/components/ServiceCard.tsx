@@ -6,7 +6,6 @@ import { API_BASE_URL } from "../config";
 interface CardProps {
   id: number;
   name: string;
-  description: string;
   price: number;
   imgUrl: string;
   averageRating: number;
@@ -21,30 +20,15 @@ interface Review {
 export const ServiceCard = (props: CardProps) => {
   const [activeStars, setActiveStars] = useState(0);
   const [clickedStars, setClickedStars] = useState(0);
-  const [newReview, setnewReview] = useState<Review>({
-    rating: 1,
-    comment: "",
-    serviceId: null,
-  });
-
+  
   const propId = props.id;
   const propPrice = props.price;
   const propName = props.name;
   const propAverageRating = props.averageRating;
   const propImgUrl = props.imgUrl;
+  console.log(propId);
 
   const token = localStorage.getItem("token");
-
-  const handleReviewPost = () => {
-    fetch(`${API_BASE_URL}/Reviews`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(newReview),
-    });
-  };
 
   const handleStarHover = (index: number) => {
     setActiveStars(index + 1);
@@ -58,8 +42,26 @@ export const ServiceCard = (props: CardProps) => {
 
   const handleStarClick = (index: number) => {
     setClickedStars(index + 1);
-    setnewReview({ rating: index, comment: "", serviceId: propId });
-    handleReviewPost();
+  
+    const review: Review = {
+      rating: index + 1,
+      comment: '', // You might want to set this to a meaningful value
+      serviceId: propId,
+    };
+  
+    fetch(`${API_BASE_URL}/Reviews`, { // Replace '/api/reviews' with your actual API endpoint
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // If your API requires authentication
+      },
+      body: JSON.stringify(review),
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
 
   const stars = [];

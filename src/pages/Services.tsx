@@ -27,7 +27,6 @@ export const Services = () => {
   const token = localStorage.getItem("token");
   const urlParams = new URLSearchParams(window.location.search);
   const facilityId = urlParams.get("facilityId");
-  const airportId = urlParams.get("airportId");
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/Services/Facility/${facilityId}`, {
@@ -42,7 +41,7 @@ export const Services = () => {
       })
       .catch((error) => console.error("Error:", error));
 
-    fetch(`${API_BASE_URL}/Facilities/${facilityId}?airportId=${airportId}`, {
+    fetch(`${API_BASE_URL}/Facilities/ByClient/${facilityId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -74,7 +73,6 @@ export const Services = () => {
                 <ServiceCard
                   key={service.id}
                   name={service.name}
-                  description={service.description}
                   price={service.price}
                   averageRating={service.averageRating}
                   imgUrl={service.imgUrl}
