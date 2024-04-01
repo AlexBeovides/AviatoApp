@@ -1,0 +1,88 @@
+.bottom-row {
+  margin-top: 10px;
+}
+
+.services-section .card {
+  cursor: default;
+  align-items: center;
+  align-content: center;
+  justify-self: center;
+  justify-content: center;
+  padding-top: 20px;
+  height: 250px;
+  width: 300px;
+}
+
+.services-section h3 {
+  font-size: 23px;
+  max-width: 280px;
+  text-wrap: wrap;
+  height: 70px;
+}
+
+.services-section .card__info {
+  position: static;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  align-content: center;
+  justify-self: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.services-section .button {
+  background-color: rgb(248, 246, 247);
+  border: #ff385c 3px solid;
+  color: #ff385c;
+  border-radius: 25px;
+  margin-top: 20px;
+  font-size: 15px;
+  width: 200px !important;
+}
+
+.card__info--price p {
+  color: #4b4b4b;
+  font-size: 18px;
+  text-align: center;
+}
+
+.services-section .button:hover {
+  background-color: rgb(247, 239, 243);
+  color: #e93254;
+}
+
+.card__info--price {
+  text-align: right;
+}
+
+.stars-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.stars-container span {
+  margin-left: 10px;
+  font-size: 15px;
+  color: #e93254;
+}
+
+.star {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+}
+
+.noHover {
+  pointer-events: none;
+}
+
+.active {
+  background-image: url("../assets/icons/star-active.svg");
+}
+
+.inactive {
+  background-image: url("../assets/icons/star-inactive.svg");
+}

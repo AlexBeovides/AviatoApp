@@ -13,9 +13,8 @@ type Airport = {
 type Facility = {
   id: number;
   name: string;
-  address: string;
   imgUrl: string;
-  FacilityType: string;
+  facilityType: string;
   isDeleted: Boolean;
 };
 
@@ -25,20 +24,20 @@ export const Facilities = () => {
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [selectWidth, setSelectWidth] = useState("auto");
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const getFacilities = (airportId: number) => {
     fetch(`${API_BASE_URL}/Facilities/WithType/${airportId}`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Response:", data);
-      setFacilitiesData(data);
-    })
-    .catch((error) => console.error("Error:", error));
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response:", data);
+        setFacilitiesData(data);
+      })
+      .catch((error) => console.error("Error:", error));
   };
 
   const handleSelectChange = () => {
@@ -52,7 +51,6 @@ export const Facilities = () => {
           const facilities = getFacilities(
             airportsData[select.selectedIndex - 1].id
           );
-          console.log(facilities);
         }
       }
     }
@@ -82,8 +80,9 @@ export const Facilities = () => {
               ref={selectRef}
               style={{ width: selectWidth }}
               onChange={handleSelectChange}
+              defaultValue=""
             >
-              <option selected disabled value="">
+              <option disabled value="">
                 Choose an airport
               </option>
               {airportsData.map(
@@ -111,12 +110,14 @@ export const Facilities = () => {
 
         <div className="facilities-container">
           {facilitiesData.map(
-            (facility) =>
+            (facility, index) =>
               !facility.isDeleted && (
                 <FacilityCard
+                  key={index}
                   name={facility.name}
-                  type={facility.address}
+                  type={facility.facilityType}
                   url={facility.imgUrl}
+                  id={facility.id}
                 />
               )
           )}

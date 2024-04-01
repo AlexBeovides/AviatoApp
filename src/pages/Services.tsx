@@ -1,40 +1,61 @@
 import "../styles/Services.scss";
 import { ServiceCard } from "../components/ServiceCard";
+import { API_BASE_URL } from "../config";
+import { useEffect, useState, useRef } from "react";
 
-// Change for generic imports, fetch from database
-import Pastries from "../assets/images/pastries.png";
-import Coffee from "../assets/images/coffee.png";
-import Sweets from "../assets/images/sweets.png";
+type Service = {
+  id: number;
+  name: string;
+  price: number;
+  averageRating: number;
+  isDeleted: Boolean;
+};
 
 export const Services = () => {
-    const hStyle = { color: '#FF385C' };
-    return (
+  const [servicesData, setServicesData] = useState<Service[]>([]);
+
+  const token = localStorage.getItem("token");
+  const urlParams = new URLSearchParams(window.location.search);
+  const facilityId = urlParams.get("facilityId");
+  const facilityName = urlParams.get("facilityName");
+
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/Services/Facility/${facilityId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Response:", data);
+        setServicesData(data);
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  const hStyle = { color: "#FF385C" };
+
+  return (
     <>
       <div className="services-section">
         <div className="intro-text">
-            <h1>Breadway | <span style={hStyle}>Services</span></h1>
-            <p>🌟Premium quality 🥖bread🍞 produced using a unique sourdough 🌾fermentation process✨ that makes our bread softer, tastier😋 and with a rich aroma👃. Try it now!👌</p>
+          <h1>
+            {facilityName} | <span style={hStyle}>Services</span>
+          </h1>
         </div>
 
         <div className="services-container">
-          <ServiceCard
-            name="Pastries"
-            stars={5}
-            price="3 USD"
-            url={Pastries}
-          />
-          <ServiceCard
-            name="Coffee"
-            stars={4}
-            price="2 USD"
-            url={Coffee}
-          />
-          <ServiceCard
-            name="Sweets"
-            stars={5}
-            price="4 USD"
-            url={Sweets}
-          />
+          {servicesData.map(
+            (service) =>
+              !service.isDeleted && (
+                <ServiceCard
+                  key={service.id}
+                  name={service.name}
+                  price={service.price}
+                  averageRating={service.averageRating}
+                />
+              )
+          )}
         </div>
       </div>
     </>
