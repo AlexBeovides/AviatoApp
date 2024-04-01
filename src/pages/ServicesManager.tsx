@@ -12,6 +12,8 @@ type Service = {
     isDeleted: boolean;
     facilityId: number | null;
     name: string;
+    description: string;
+    imgUrl: string;
     price: number | null;
 };     
  
@@ -19,7 +21,8 @@ export const ServicesManager = () => {
   const [rowData, setRowData] = useState<Service[]>([]);
   const [selectedRows, setSelectedRows] = useState<Service[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newService, setNewService] = useState<Service>({ id: 0, isDeleted: false, facilityId: null, name: '', price: null });
+  const [newService, setNewService] = useState<Service>({ id: 0, isDeleted: false, 
+    facilityId: null, name: '',description: '',imgUrl: '',price: null });
 
   const token = localStorage.getItem('token');
   const { userAirportId } = useContext(AuthContext);
@@ -28,6 +31,8 @@ export const ServicesManager = () => {
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
     { field: 'isDeleted', headerName: 'Deleted', editable: true, filter: true, cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
+    { field: 'description', headerName: 'Description', editable: true },
+    { field: 'imgUrl', headerName: 'Image Url', editable: true },
     { field: 'facilityId', headerName: 'Facility ID', editable: true, filter: true },
     { field: 'price', headerName: 'Price', editable: true, filter: true }
   ];
@@ -123,6 +128,8 @@ export const ServicesManager = () => {
       
       <form className="form-container" onSubmit={handleFormSubmit}>
         <input type="text" name="name" value={newService.name} onChange={handleInputChange} placeholder="Name" required />
+        <input type="text" name="description" value={newService.description} onChange={handleInputChange} placeholder="Description" required />
+        <input type="text" name="imgUrl" value={newService.imgUrl} onChange={handleInputChange} placeholder="ImageUrl" required />
         <input type="text" name="facilityId" value={newService.facilityId || ''} onChange={handleInputChange} placeholder="Facility ID" />
         <input type="text" name="price" value={newService.price || ''} onChange={handleInputChange} placeholder="Price" />
         <button className='my-button' type="submit">Add New Service</button>

@@ -10,6 +10,7 @@ import { AuthContext } from "../AuthContext";
 type Facility = {
     id: number;
     name: string;
+    description: string;
     address: string;
     imgUrl: string;
     airportId: number | null;
@@ -21,8 +22,8 @@ export const FacilitiesManager = () => {
   const [rowData, setRowData] = useState<Facility[]>([]);
   const [selectedRows, setSelectedRows] = useState<Facility[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newFacility, setNewPlane] = useState<Facility>({  id: 0 , name: '' , address: ''  , 
-  imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
+  const [newFacility, setNewPlane] = useState<Facility>({  id: 0 , name: '' , description: '' ,
+   address: ''  , imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
 
   const token = localStorage.getItem('token');
   const { userAirportId } = useContext(AuthContext);
@@ -32,6 +33,7 @@ export const FacilitiesManager = () => {
     { field: 'isDeleted', headerName: 'Deleted', editable: true , filter: true, 
     cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
+    { field: 'description', headerName: 'Description', editable: true },
     { field: 'address', headerName: 'Address', editable: true },
     { field: 'imgUrl', headerName: 'Image Url', editable: true },
     { field: 'facilityTypeId', headerName: 'Facility Type ID', editable: true , filter: true }
@@ -129,6 +131,7 @@ export const FacilitiesManager = () => {
       
       <form className="form-container" onSubmit={handleFormSubmit}>
         <input type="text" name="name" value={newFacility.name} onChange={handleInputChange} placeholder="Name" required />
+        <input type="text" name="description" value={newFacility.description} onChange={handleInputChange} placeholder="Description" required />
         <input type="text" name="address" value={newFacility.address} onChange={handleInputChange} placeholder="Address" required />
         <input type="text" name="imgUrl" value={newFacility.imgUrl} onChange={handleInputChange} placeholder="Image URL" required />
         <input type="text" name="facilityTypeId" value={newFacility.facilityTypeId || ''} onChange={handleInputChange} placeholder="Facility Type ID" />
