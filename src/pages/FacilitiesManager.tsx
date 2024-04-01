@@ -4,12 +4,12 @@ import { AgGridReact } from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
-import { useEffect, useState, useContext } from 'react';
-import { AuthContext } from "../AuthContext";
+import { useEffect, useState } from 'react';
 
 type Facility = {
     id: number;
     name: string;
+    description: string;
     address: string;
     imgUrl: string;
     airportId: number | null;
@@ -21,17 +21,17 @@ export const FacilitiesManager = () => {
   const [rowData, setRowData] = useState<Facility[]>([]);
   const [selectedRows, setSelectedRows] = useState<Facility[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newFacility, setNewPlane] = useState<Facility>({  id: 0 , name: '' , address: ''  , 
-  imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
+  const [newFacility, setNewPlane] = useState<Facility>({  id: 0 , name: '' , description: '' ,
+   address: ''  , imgUrl: '' , airportId: null, facilityTypeId: null , isDeleted: false });
 
   const token = localStorage.getItem('token');
-  const { userAirportId } = useContext(AuthContext);
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
     { field: 'isDeleted', headerName: 'Deleted', editable: true , filter: true, 
     cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
+    { field: 'description', headerName: 'Description', editable: true },
     { field: 'address', headerName: 'Address', editable: true },
     { field: 'imgUrl', headerName: 'Image Url', editable: true },
     { field: 'facilityTypeId', headerName: 'Facility Type ID', editable: true , filter: true }
@@ -51,8 +51,13 @@ export const FacilitiesManager = () => {
     }
   };
   
+
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`)
+    fetch(`${API_BASE_URL}/Facilities`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then(response => response.json())
       .then(data => {console.log('Response:', data); setRowData(data);})
       .catch(error => console.error('Error:', error));
@@ -61,9 +66,8 @@ export const FacilitiesManager = () => {
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const { id, ...facilityDTO} = newFacility;
-    facilityDTO.airportId = userAirportId;
 
-    fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`, {
+    fetch(`${API_BASE_URL}/Facilities`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -79,7 +83,7 @@ export const FacilitiesManager = () => {
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedFacility = params.data;
 
-    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}?airportId=${userAirportId}`, {
+    fetch(`${API_BASE_URL}/Facilities/${updatedFacility.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -93,14 +97,18 @@ export const FacilitiesManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Facilities/${row.id}?airportId=${userAirportId}`, {
+        fetch(`${API_BASE_URL}/Facilities/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Facilities?airportId=${userAirportId}`))
+      .then(() => fetch(`${API_BASE_URL}/Facilities`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -124,11 +132,12 @@ export const FacilitiesManager = () => {
             rowSelection="multiple"
             />
         </div>
-      <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
+      <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Facilities</button>
       </div>
       
       <form className="form-container" onSubmit={handleFormSubmit}>
         <input type="text" name="name" value={newFacility.name} onChange={handleInputChange} placeholder="Name" required />
+        <input type="text" name="description" value={newFacility.description} onChange={handleInputChange} placeholder="Description" required />
         <input type="text" name="address" value={newFacility.address} onChange={handleInputChange} placeholder="Address" required />
         <input type="text" name="imgUrl" value={newFacility.imgUrl} onChange={handleInputChange} placeholder="Image URL" required />
         <input type="text" name="facilityTypeId" value={newFacility.facilityTypeId || ''} onChange={handleInputChange} placeholder="Facility Type ID" />

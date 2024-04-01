@@ -129,7 +129,7 @@ export const FlightsManager = () => {
               rowSelection="multiple"
               />
           </div>
-        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Rows</button>
+        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Flights</button>
         </div>
         <form className="form-container" onSubmit={handleFormSubmit}>
           <input type="datetime-local" name="arrivalTime" value={newFlight.arrivalTime.toISOString().slice(0,16) } onChange={handleInputChange} placeholder="Arrival Time" required />
