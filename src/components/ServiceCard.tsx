@@ -99,9 +99,28 @@ export const ServiceCard = (props: CardProps) => {
           <p>$ {propPrice}</p>
           <div className="stars-container bottom-row">
             {stars}
-            <span>{propAverageRating}</span>
+            <span>{propAverageRating.toFixed(1)}</span>
           </div>
-          <button className="fluid ui button">Request</button>
+          <button 
+            className="fluid ui button request-button" 
+            onClick={() => {
+              fetch(`${API_BASE_URL}/ServiceRequests`, { // Replace '/api/request' with your actual API endpoint
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, // If your API requires authentication
+                },
+                body: JSON.stringify({ serviceId: propId }),
+              })
+              .then(response => response.json())
+              .then(data => console.log(data))
+              .catch((error) => {
+                console.error('Error:', error);
+              });
+            }}
+          >
+          Request
+        </button>
         </div>
       </div>
     </div>
