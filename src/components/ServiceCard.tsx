@@ -2,6 +2,8 @@
 import "../styles/ServiceCard.scss";
 import { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 interface CardProps {
   id: number;
@@ -20,7 +22,7 @@ interface Review {
 export const ServiceCard = (props: CardProps) => {
   const [activeStars, setActiveStars] = useState(0);
   const [clickedStars, setClickedStars] = useState(0);
-  
+
   const propId = props.id;
   const propPrice = props.price;
   const propName = props.name;
@@ -42,26 +44,27 @@ export const ServiceCard = (props: CardProps) => {
 
   const handleStarClick = (index: number) => {
     setClickedStars(index + 1);
-  
+
     const review: Review = {
       rating: index + 1,
-      comment: '', // You might want to set this to a meaningful value
+      comment: "", // You might want to set this to a meaningful value
       serviceId: propId,
     };
-  
-    fetch(`${API_BASE_URL}/Reviews`, { // Replace '/api/reviews' with your actual API endpoint
-      method: 'POST',
+
+    fetch(`${API_BASE_URL}/Reviews`, {
+      // Replace '/api/reviews' with your actual API endpoint
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`, // If your API requires authentication
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // If your API requires authentication
       },
       body: JSON.stringify(review),
     })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const stars = [];
@@ -101,26 +104,33 @@ export const ServiceCard = (props: CardProps) => {
             {stars}
             <span>{propAverageRating.toFixed(1)}</span>
           </div>
-          <button 
-            className="fluid ui button request-button" 
-            onClick={() => {
-              fetch(`${API_BASE_URL}/ServiceRequests`, { // Replace '/api/request' with your actual API endpoint
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`, // If your API requires authentication
-                },
-                body: JSON.stringify({ serviceId: propId }),
-              })
-              .then(response => response.json())
-              .then(data => console.log(data))
-              .catch((error) => {
-                console.error('Error:', error);
-              });
-            }}
+          <Popup
+            trigger={
+              <button
+                className="fluid ui button request-button"
+                onClick={() => {
+                  fetch(`${API_BASE_URL}/ServiceRequests`, {
+                    // Replace '/api/request' with your actual API endpoint
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${token}`, // If your API requires authentication
+                    },
+                    body: JSON.stringify({ serviceId: propId }),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => console.log(data))
+                    .catch((error) => {
+                      console.error("Error:", error);
+                    });
+                }}
+              >
+                Request
+              </button>
+            }
           >
-          Request
-        </button>
+            <div>Service request confirmed!</div>
+          </Popup>
         </div>
       </div>
     </div>
