@@ -15,7 +15,6 @@
   counter-increment: item;
   font-size: 19px;
   margin-bottom: 50px;
-  display: flex;
 }
 
 .stats-container li:before {
@@ -31,4 +30,27 @@
   text-align: center;
   padding-top: 3px;
   display: inline-block;
+}
+
+.buttons-container {
+  display: block;
+  margin-top: 10px;
+}
+
+.buttons-container button:hover {
+  background: rgb(236, 236, 236);
+}
+
+.buttons-container button {
+  transition: 0.3s;
+}
+
+.export-button {
+  margin-left: 10px;
+}
+
+.disabled-button {
+  pointer-events: none;
+  border-color: rgb(170, 170, 170);
+  color: rgb(170, 170, 170);
 }
