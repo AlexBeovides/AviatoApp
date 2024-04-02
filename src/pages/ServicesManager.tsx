@@ -14,6 +14,7 @@ type Service = {
     description: string;
     imgUrl: string;
     price: number | null;
+    averageRating: number | null;
 };     
  
 export const ServicesManager = () => {
@@ -21,7 +22,7 @@ export const ServicesManager = () => {
   const [selectedRows, setSelectedRows] = useState<Service[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
   const [newService, setNewService] = useState<Service>({ id: 0, isDeleted: false, 
-    facilityId: null, name: '',description: '',imgUrl: '',price: null });
+    facilityId: null, name: '',description: '', averageRating: null, price: null ,imgUrl: '' });
 
   const token = localStorage.getItem('token');
 
@@ -30,6 +31,7 @@ export const ServicesManager = () => {
     { field: 'isDeleted', headerName: 'Deleted', editable: true, filter: true, cellRenderer: (params: CellValueChangedEvent) => params.value ? 'true' : 'false'},
     { field: 'name', headerName: 'Name', editable: true },
     { field: 'description', headerName: 'Description', editable: true },
+    { field: 'averageRating', headerName: 'Average Rating', filter: true },
     { field: 'imgUrl', headerName: 'Image Url', editable: true },
     { field: 'facilityId', headerName: 'Facility ID', editable: true, filter: true },
     { field: 'price', headerName: 'Price', editable: true, filter: true }
@@ -62,7 +64,7 @@ export const ServicesManager = () => {
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { id, ...serviceDTO} = newService; 
+    const { id, averageRating, ...serviceDTO} = newService; 
 
     fetch(`${API_BASE_URL}/Services`, {
       method: 'POST',
