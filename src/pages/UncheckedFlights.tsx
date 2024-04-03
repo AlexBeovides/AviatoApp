@@ -13,7 +13,6 @@ type Flight = {
     departureTime: Date ;
     planeId: number | null;
     ownerRoleId: number | null;
-    planeConditionId: number | null;
     needsCheck: boolean;
 };  
 
@@ -30,7 +29,6 @@ export const UncheckedFlights = () => {
     { field: 'departureTime', headerName: 'Departure Time', editable: true },
     { field: 'planeId', headerName: 'Plane ID', editable: true },
     { field: 'ownerRoleId', headerName: 'Owner Role ID', editable: true },
-    { field: 'planeConditionId', headerName: 'Plane Condition ID', editable: true },
     { field: 'needsCheck', headerName: 'Needs Check', editable: true },
   ];
 
@@ -62,7 +60,7 @@ export const UncheckedFlights = () => {
       Promise.all(selectedRows.map(row => {
         const updatedFlight = { ...row, needsCheck: false };
   
-        return fetch(`${API_BASE_URL}/Flights/Check/${row.id}`, {
+        return fetch(`${API_BASE_URL}/Flights/CheckFlight/${row.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -71,7 +69,11 @@ export const UncheckedFlights = () => {
           body: JSON.stringify(updatedFlight),
         });
       }))
-      .then(() => fetch(`${API_BASE_URL}/Flights`))
+      .then(() => fetch(`${API_BASE_URL}/Flights/Unchecked`, {        // pending
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      }))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -82,7 +84,7 @@ export const UncheckedFlights = () => {
   
   return (
     <>
-      <h2 className='page-header'>Flights Data:</h2>
+      <h2 className='page-header'>Flights with Pending Check:</h2>
       <div className='section-container'>
         <div className='table-container'>
           <div className="ag-theme-quartz manager-table" style={{ height: 400, width: 800 }}>

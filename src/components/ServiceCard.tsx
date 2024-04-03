@@ -22,6 +22,9 @@ interface Review {
 export const ServiceCard = (props: CardProps) => {
   const [activeStars, setActiveStars] = useState(0);
   const [clickedStars, setClickedStars] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const propId = props.id;
   const propPrice = props.price;
@@ -105,32 +108,38 @@ export const ServiceCard = (props: CardProps) => {
             <span>{propAverageRating.toFixed(1)}</span>
           </div>
           <Popup
-            trigger={
-              <button
-                className="fluid ui button request-button"
-                onClick={() => {
-                  fetch(`${API_BASE_URL}/ServiceRequests`, {
-                    // Replace '/api/request' with your actual API endpoint
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`, // If your API requires authentication
-                    },
-                    body: JSON.stringify({ serviceId: propId }),
-                  })
-                    .then((response) => response.json())
-                    .then((data) => console.log(data))
-                    .catch((error) => {
-                      console.error("Error:", error);
-                    });
-                }}
-              >
-                Request
-              </button>
-            }
-          >
-            <div>Service request confirmed!</div>
-          </Popup>
+  open={open}
+  onOpen={() => {
+    if (!isLoading) {
+      setIsLoading(true);
+      fetch(`${API_BASE_URL}/ServiceRequests`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ serviceId: propId }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setOpen(true);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          setIsLoading(false);
+        });
+    }
+  }}
+  trigger={
+    <button className="fluid ui button request-button" disabled={isLoading}>
+      Request
+    </button>
+  }
+>
+  <div>Service request confirmed!</div>
+</Popup>
         </div>
       </div>
     </div>

@@ -21,9 +21,9 @@ type Facility = {
 export const Facilities = () => {
   const [airportsData, setAirportsData] = useState<Airport[]>([]);
   const [facilitiesData, setFacilitiesData] = useState<Facility[]>([]);
+  const [selectedAirportId, setSelectedAirportId] = useState<number | null>(null);
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [selectWidth, setSelectWidth] = useState("auto");
-
   const token = localStorage.getItem("token");
 
   const getFacilities = (airportId: number) => {
@@ -40,32 +40,48 @@ export const Facilities = () => {
       .catch((error) => console.error("Error:", error));
   };
 
-  const handleSelectChange = () => {
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const airportId = Number(event.target.value);
+    setSelectedAirportId(airportId);
+    getFacilities(airportId);
+  
+    // Save the selected airport id to localStorage
+    localStorage.setItem('selectedAirportId', String(airportId));
+  
+    // Adjust the width of the select element
     if (selectRef.current) {
       const select = selectRef.current;
       if (select.selectedIndex !== -1) {
         const selectedOption = select.options[select.selectedIndex];
         if (selectedOption) {
-          if (selectedOption.value == "") return;
           setSelectWidth(`${selectedOption.text.length - 2}ch`);
-          const facilities = getFacilities(
-            airportsData[select.selectedIndex - 1].id
-          );
         }
       }
     }
   };
 
   useEffect(() => {
-    handleSelectChange();
     fetch(`${API_BASE_URL}/Airports`)
       .then((response) => response.json())
       .then((data) => {
         console.log("Response:", data);
         setAirportsData(data);
+  
+        // Retrieve the selected airport id from localStorage
+        const savedAirportId = localStorage.getItem('selectedAirportId');
+        if (savedAirportId) {
+          setSelectedAirportId(Number(savedAirportId));
+          getFacilities(Number(savedAirportId));
+        }
       })
       .catch((error) => console.error("Error:", error));
   }, []);
+
+  useEffect(() => {
+    if (selectedAirportId) {
+      getFacilities(selectedAirportId);
+    }
+  }, [selectedAirportId]);
 
   const hStyle = { color: "#FF385C" };
 
@@ -79,8 +95,8 @@ export const Facilities = () => {
               id="airports-select"
               ref={selectRef}
               style={{ width: selectWidth }}
+              value={selectedAirportId || ""}
               onChange={handleSelectChange}
-              defaultValue=""
             >
               <option disabled value="">
                 Choose an airport
@@ -118,9 +134,7 @@ export const Facilities = () => {
                   type={facility.facilityType}
                   url={facility.imgUrl}
                   id={facility.id}
-                  airportId={
-                    airportsData[selectRef.current.selectedIndex - 1].id
-                  }
+                  airportId={selectedAirportId}
                 />
               )
           )}

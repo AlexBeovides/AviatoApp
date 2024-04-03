@@ -1,8 +1,9 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect,useContext, ChangeEvent, FormEvent } from "react";
 import { useNavigate } from 'react-router-dom';
 import "../styles/Register.scss";
 import { Link } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { AuthContext } from "../AuthContext";
 
 interface FormValues { 
   email: string;
@@ -25,16 +26,17 @@ interface FormErrors {
 
 export const Register = () =>{
     const initialValues: FormValues = { 
-      email: "",
-      password: "",
-      confirmPassword: "",
-      name: "",
-      surname: "",
-      country: ""
+        email: "",
+        password: "",
+        confirmPassword: "",
+        name: "",
+        surname: "",
+        country: ""
     };
     const [formValues, setFormValues] = useState<FormValues>(initialValues);
     const [formErrors, setFormErrors] = useState<FormErrors>({});
     const [isLoading, setIsLoading] = useState<boolean>(false); 
+    const { setToken,setUserRole } = useContext(AuthContext);
 
     const navigate = useNavigate();
   
@@ -69,6 +71,12 @@ export const Register = () =>{
     
             if (response.ok) {
                 console.log('Signed up successfully', data);
+                localStorage.setItem('token', data.token); 
+                localStorage.setItem('user_role', data.role); 
+                localStorage.setItem('user_airport_id', data.airportId); 
+                console.log(data);
+                setToken(data.token);
+                setUserRole(data.role);
                 navigate('/aviatoapp/');
             } else {
                 console.log('Request failed', data);

@@ -73,7 +73,7 @@ export const LogIn = () => {
           }
         } else if (response.status === 401) {
           console.log('Request failed', data);
-          setFormErrors({ server: "Wrong email/password combination" });
+          setFormErrors({ server: "Something went wrong." });
         } else {
           console.log('Request failed', data);
           setFormErrors({ server: Object.values(data).join(' ') });

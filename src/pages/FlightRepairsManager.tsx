@@ -7,30 +7,33 @@ import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useEffect, useState } from 'react';
 import { ColDef, CellValueChangedEvent, GridReadyEvent, GridApi } from 'ag-grid-community';
 
-type Flight = {
+type FlightRepair = {
     id: number;
-    arrivalTime: Date ;
-    departureTime: Date ;
-    planeId: number | null;
-    ownerRoleId: number | null;
-    needsCheck: boolean;
+    startedAt: Date ;
+    finishedAt: Date ;
+    flightId: number | null;
+    repairId: number | null;
+    duration: number;
+    repairCost:number;
 };  
 
-export const FlightsManager = () => {
-  const [rowData, setRowData] = useState<Flight[]>([]);
-  const [selectedRows, setSelectedRows] = useState<Flight[]>([]);
+
+export const FlightRepairsManager = () => {
+  const [rowData, setRowData] = useState<FlightRepair[]>([]);
+  const [selectedRows, setSelectedRows] = useState<FlightRepair[]>([]);
   const [gridApi, setGridApi] = useState<GridApi | null>(null);
-  const [newFlight, setNewFlight] = useState<Flight>({ id: 0, arrivalTime: new Date(), departureTime: new Date(), planeId: null, ownerRoleId: null, needsCheck: false });
+  const [newFlightRepair, setNewFlightRepair] = useState<FlightRepair>({ id: 0, startedAt: new Date(), finishedAt: new Date(), flightId: null, repairId: null, duration: 0, repairCost: 0 });
 
   const token = localStorage.getItem('token');
 
   const colDefs: ColDef[] = [
     { field: 'id', headerName: 'ID', editable: false, checkboxSelection: true },
-    { field: 'arrivalTime', headerName: 'Arrival Time', editable: true },
-    { field: 'departureTime', headerName: 'Departure Time', editable: true },
-    { field: 'planeId', headerName: 'Plane ID', editable: true },
-    { field: 'ownerRoleId', headerName: 'Owner Role ID', editable: true },
-    { field: 'needsCheck', headerName: 'Needs Check', editable: true },
+    { field: 'startedAt', headerName: 'Started At', editable: true },
+    { field: 'finishedAt', headerName: 'Finished At', editable: true },
+    { field: 'flightId', headerName: 'Flight ID', editable: true },
+    { field: 'repairId', headerName: 'Repair ID', editable: true },
+    { field: 'duration', headerName: 'Duration', editable: true },
+    { field: 'repairCost', headerName: 'Repair Cost', editable: true },
   ];
 
   const onGridReady = (params: GridReadyEvent) => {
@@ -38,10 +41,10 @@ export const FlightsManager = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.name === 'arrivalTime' || event.target.name === 'departureTime') {
-      setNewFlight({ ...newFlight, [event.target.name]: new Date(event.target.value) });
+    if (event.target.name === 'startedAt' || event.target.name === 'finishedAt') {
+      setNewFlightRepair({ ...newFlightRepair, [event.target.name]: new Date(event.target.value) });
     } else {
-      setNewFlight({ ...newFlight, [event.target.name]: event.target.value });
+      setNewFlightRepair({ ...newFlightRepair, [event.target.name]: Number(event.target.value) });
     }
   };
 
@@ -52,7 +55,7 @@ export const FlightsManager = () => {
   };
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/Flights`, {
+    fetch(`${API_BASE_URL}/FlightRepairs`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -64,25 +67,25 @@ export const FlightsManager = () => {
 
   const handleFormSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    const { id, ...flightDTO} = newFlight; 
+    const { id, ...flightRepairDTO} = newFlightRepair; 
 
-    fetch(`${API_BASE_URL}/Flights`, {
+    fetch(`${API_BASE_URL}/FlightRepairs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
-      body: JSON.stringify(flightDTO),
+      body: JSON.stringify(flightRepairDTO),
     })
     .then(response => response.json())
-    .then(data => {console.log(flightDTO); setRowData([...rowData, data]);})
+    .then(data => {console.log(flightRepairDTO); setRowData([...rowData, data]);})
     .catch(error => console.error('Error:', error));
   };
   
   const onCellValueChanged = (params : CellValueChangedEvent) => {
     const updatedFlight = params.data;
   
-    fetch(`${API_BASE_URL}/Flights/${updatedFlight.id}`, {
+    fetch(`${API_BASE_URL}/FlightRepairs/${updatedFlight.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -96,18 +99,14 @@ export const FlightsManager = () => {
   const deleteSelectedRows = () => {
     if (window.confirm('Are you sure you want to delete the selected rows?')) {
       Promise.all(selectedRows.map(row => 
-        fetch(`${API_BASE_URL}/Flights/${row.id}`, {
+        fetch(`${API_BASE_URL}/FlightRepairs/${row.id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         })
       ))
-      .then(() => fetch(`${API_BASE_URL}/Flights`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      }))
+      .then(() => fetch(`${API_BASE_URL}/FlightRepairs`))
       .then(response => response.json())
       .then(data => setRowData(data))
       .catch(error => console.error('Error:', error));
@@ -118,11 +117,11 @@ export const FlightsManager = () => {
   
   return (
     <>
-      <h2 className='page-header'>Flights Data:</h2>
+      <h2 className='page-header'>Flights Repairs Data:</h2>
       <div className='section-container'>
         <div className='table-container'>
           <div className="ag-theme-quartz manager-table" style={{ height: 400, width: 800 }}>
-            <AgGridReact<Flight>
+            <AgGridReact<FlightRepair>
               rowData={rowData}
               columnDefs={colDefs} 
               onCellValueChanged={onCellValueChanged}
@@ -131,18 +130,14 @@ export const FlightsManager = () => {
               rowSelection="multiple"
               />
           </div>
-        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Flights</button>
+        <button className='my-button delete-button' onClick={deleteSelectedRows}>Delete Selected Flight Repairs</button>
         </div>
         <form className="form-container" onSubmit={handleFormSubmit}>
-          <input type="datetime-local" name="arrivalTime" value={newFlight.arrivalTime.toISOString().slice(0,16) } onChange={handleInputChange} placeholder="Arrival Time" required />
-          <input type="datetime-local" name="departureTime" value={newFlight.departureTime.toISOString().slice(0,16) }  onChange={handleInputChange} placeholder="Departure Time" required />
-          <input type="number" name="planeId" value={newFlight.planeId || ''} onChange={handleInputChange} placeholder="Plane ID" />
-          <input type="number" name="ownerRoleId" value={newFlight.ownerRoleId || ''} onChange={handleInputChange} placeholder="Owner Role ID" />
-          <label className='need-check'>
-            Needs Check? 
-            <input type="checkbox" name="needsCheck" checked={newFlight.needsCheck} onChange={e => setNewFlight({ ...newFlight, needsCheck: e.target.checked })} placeholder="Needs Check" />
-          </label>
-          <button className='my-button' type="submit">Add New Flight</button>
+          <input type="datetime-local" name="startedAt" value={newFlightRepair.startedAt.toISOString().slice(0,16) } onChange={handleInputChange} placeholder="Started At" required />
+          <input type="datetime-local" name="finishedAt" value={newFlightRepair.finishedAt.toISOString().slice(0,16) }  onChange={handleInputChange} placeholder="Finished At" required />
+          <input type="number" name="flightId" value={newFlightRepair.flightId || ''} onChange={handleInputChange} placeholder="Flight ID" />
+          <input type="number" name="repairId" value={newFlightRepair.repairId || ''} onChange={handleInputChange} placeholder="Repair ID" />
+          <button className='my-button' type="submit">Add New Flight Repair</button>
         </form>
       </div>
     </>
